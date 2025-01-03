@@ -1,0 +1,92 @@
+
+<div class="row px-5">
+  <div class="col-12">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Sr. No</th>
+          <th>Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of roleList;let ind = index">
+          <td>{{ind + 1}}</td>
+          <td>{{item.role}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- <div class="row">
+  <div class="col-4">
+    <ul>
+      <li *ngFor="let item of roleList" >{{item.role}}</li>
+    </ul>
+  </div>
+  <div class="col-4">
+    <select>
+         <option *ngFor="let item of roleList" [value]="item.roleId">{{item.role}}</option>
+    </select>
+  </div>
+  <div class="col-4">
+    <button 
+      class="m-2" 
+      *ngFor="let item of roleList; let i = index" 
+      [ngClass]="{
+        'bg-success': i % 2 === 0, 
+        'bg-danger': i % 2 !== 0
+      }">
+      {{item.role}}
+    </button>
+  </div>
+</div> -->
+
+<!-- <div class="row">
+  <div class="col-3">
+    <p>{{ firstName }}</p>
+  </div>
+  <div class="col-3">
+    <p>{{ angularVersion }}</p>
+  </div>
+  <div class="col-3">
+    <p>{{ version }}</p>
+  </div>
+  <div class="col-3">
+    <p>{{ isActive }}</p>
+  </div>
+  <div class="col-3">
+    <p>{{ currentDate }}</p>
+  </div>
+  <div class="col-3">
+    <p>{{ selectedState }}</p>
+  </div>
+</div>
+<div class="row">
+    <div class="col-3">
+        <input type="text" [value]="angularVersion"/>
+    </div>
+    <div class="col-3">
+        <input type="text" [(ngModel)]="angularVersion" />
+    </div>
+    <div class="col-3">
+        <input [type]="inputType" value="Button Click"/>
+    </div>
+    <div class="col-3">
+        <select [(ngModel)]="selectedState">
+            <option value="MP">MP</option>
+            <option value="UP">UP</option>
+            <option value="MH">MH</option>
+        </select>
+    </div>
+</div>
+
+<div>
+    <div class="col-4">
+        <button class="btn btn-success" (click)="showWelcomeAlert()" >ShowWelcomeAlert</button>
+    </div>
+    <div class="col-4">
+        <button class="btn btn-success" (click)="showMessageAlert('happy Birthday')" >ShowMessageAlert</button>
+    </div>
+</div> -->
+
