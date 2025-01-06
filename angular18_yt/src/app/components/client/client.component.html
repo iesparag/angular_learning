@@ -1,0 +1,166 @@
+<div class="d-flex justify-content-evenly">
+  <div class="col-7 shadow rounded p-3">
+    <div class="card-header fw-bold fs-4">Client List</div>
+    <div class="card-body mt-3">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>client Id</th>
+            <th>Person Name</th>
+            <th>company Name</th>
+            <th>city</th>
+            <th>gstNo</th>
+            <th>contact No</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of clientList; track $index) {
+          <tr>
+            <td>{{ item.clientId }}</td>
+            <td>{{ item.contactPersonName }}</td>
+            <td>{{ item.companyName }}</td>
+            <td>{{ item.city }}</td>
+            <td>{{ item.gstNo }}</td>
+            <td>{{ item.contactNo }}</td>
+            <td class="d-flex justify-content-evenly">
+              <button (click)="onEdit(item)" class="btn btn-warning">
+                Edit
+              </button>
+              <button (click)="onDelete(item.clientId)" class="btn btn-danger">
+                Delete
+              </button>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="col-4 shadow rounded p-3">
+    <span class="card-header fw-bold fs-4 mb-5">
+      {{ clientObj.clientId === 0 ? "Add New Client" : "Edit Client" }}
+    </span>
+        <form #form="ngForm">
+            <div class="card-body mt-3">
+                <div class="row">
+                  <div class="col-6">
+                    <label for="">Person Name</label>
+                    <input
+                      type="text"
+                      #personName="ngModel"
+                      minlength="5"
+                      required
+                      name="contactPersonName"
+                      [(ngModel)]="clientObj.contactPersonName"
+                      class="form-control"
+                    />
+                    @if(personName.touched){
+                    <div class="text-danger">
+                      @if(personName?.errors?.['required']){
+                      <span>This is a required field</span>
+                      } @if(personName?.errors?.['minlength']){
+                      <span>Min length 5 is required</span>
+                      }
+                    </div>
+                    }
+                  </div>
+                  <div class="col-6">
+                    <label for="">company Name</label>
+                    <input
+                      type="text"
+                      [(ngModel)]="clientObj.companyName"
+                      name="companyName"
+                      class="form-control"
+                    />
+                  </div>
+                  <div class="col-6">
+                    <label for="">address</label>
+                    <textarea
+                      [(ngModel)]="clientObj.address"
+                      name="address"
+                      class="form-control"
+                    ></textarea>
+                  </div>
+                  <div class="col-6">
+                    <label for="">city</label>
+                    <input
+                      [(ngModel)]="clientObj.city"
+                      name="city"
+                      type="text"
+                      class="form-control"
+                    />
+                  </div>
+                  <div class="col-6">
+                    <label for="">Pincode</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="clientObj.pincode"
+                      name="pincode"
+                    />
+                  </div>
+                  <div class="col-6">
+                    <label for="">state</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="clientObj.state"
+                      name="state"
+                    />
+                  </div>
+                  <div class="col-6">
+                    <label for="">employee Strength</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="clientObj.employeeStrength"
+                      name="employeeStrength"
+                    />
+                  </div>
+                  <div class="col-6">
+                    <label for="">gstNo</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="clientObj.gstNo"
+                      name="gstNo"
+                    />
+                  </div>
+                  <div class="col-6">
+                    <label for="">contact No</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="clientObj.contactNo"
+                      name="contactNo"
+                    />
+                  </div>
+                  <div class="col-6">
+                    <label for="">reg No</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="clientObj.regNo"
+                      name="regNo"
+                    />
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col-6 d-flex justify-content-center">
+                    <button class="btn btn-success" [disabled]="!form.valid" (click)="onAddUpdate()">
+                      {{
+                        clientObj.clientId === 0
+                          ? "Add New Client"
+                          : "Update Client Detail"
+                      }}
+                    </button>
+                  </div>
+                  <div class="col-6 d-flex justify-content-center">
+                    <button class="btn btn-danger" (click)="onReset()">reset</button>
+                  </div>
+                </div>
+              </div>
+        </form>
+  </div>
+</div>

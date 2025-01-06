@@ -8,6 +8,7 @@ DATA BINDING
     Event binding. ==> (click)="showWelcomeAlert()  ===>  (click)="showMessageAlert('happy Birthday')"
 
 DIRECTIVES 
+     "DIRECTIVE WILL WORK ONLY FOR A PARTICULAR STATEMENT".
     TWO TYPES
         STRUCTURAL / ATTRIBUTE
 
@@ -54,3 +55,21 @@ For Making API - request
 
 ****---------****
 jab bhi hum koi component service bnate hai toh class ke upar ek decorator banta hai usi se uska purpose decide hota hai.
+
+
+CONTROL FLOW STATEMENT (introduce in Angular 17):
+   @for ---> loop
+   @if @else
+   @switch
+
+ROUTING --> 
+   routes, routerOutlet, 
+
+NOTE -> WHen we are creating an Object which we are binding to a form. then we will go for a Class. Instead of Interface.
+
+1. Angular Forms का Concept
+Angular forms दो तरीकों से काम कर सकते हैं:
+
+Template-Driven Forms: Forms और validations HTML टेम्पलेट में लिखे जाते हैं। (ngModel आधारित)
+Reactive Forms: Forms और validations TypeScript क्लास में लिखे जाते हैं।
+आपका कोड Template-Driven Forms पर आधारित है, जिसमें ngModel और required validator का उपयोग हुआ है।

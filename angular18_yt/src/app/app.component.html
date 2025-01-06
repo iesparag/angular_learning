@@ -1,3 +1,40 @@
-<div class="outer">
-    <app-master></app-master>
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark" style="height: 60px; margin-bottom: 20px;">
+  <div class="container-fluid d-flex justify-content-center px-3">
+    <a class="navbar-brand"  routerLink="">Logo</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#mynavbar"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mynavbar">
+      <ul class="navbar-nav me-auto">
+        
+        <li class="nav-item" >
+          <a class="nav-link" routerLink="/master" routerLinkActive="active" >Master</a>
+        </li>
+        <li class="nav-item" >
+          <a class="nav-link" routerLink="/employee" routerLinkActive="active" >Employee</a>
+        </li>
+        <li class="nav-item" >
+          <a class="nav-link" routerLink="/client" routerLinkActive="active" >Client</a>
+        </li>
+        <li class="nav-item" >
+          <a class="nav-link" routerLink="/client-project" routerLinkActive="active" >Client Projects</a>
+        </li>
+      </ul>
+      <form class="d-flex">
+        <input class="form-control me-2" type="text" placeholder="Search" />
+        <button class="btn btn-primary" type="button">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<div class="row">
+    <div class="col-12">
+        <router-outlet></router-outlet>
+    </div>
 </div>
