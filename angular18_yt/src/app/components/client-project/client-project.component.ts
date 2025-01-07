@@ -8,17 +8,18 @@ import {
 } from '@angular/forms';
 import { ClientService } from '../../services/client.service';
 import { EmployeeService } from '../../services/employee.service';
-import { IEmployee } from '../../model/interface/role';
+import { APIResponse, IClientProject, IEmployee } from '../../model/interface/role';
 import { Client } from '../../model/class/Client';
+import { CommonModule, DatePipe, UpperCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-client-project',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule,UpperCasePipe,DatePipe],
   templateUrl: './client-project.component.html',
   styleUrl: './client-project.component.css',
 })
 export class ClientProjectComponent implements OnInit {
-  clientProjectList: any[] = [];
+  clientProjectList: IClientProject[] = [];
   clientList: Client[] = [];
   employeeList: IEmployee[] = [];
   clientService = inject(ClientService);
@@ -64,7 +65,7 @@ export class ClientProjectComponent implements OnInit {
 
   onGetAllClientProjects() {
     this.clientProjectService.getAllClientProjects().subscribe({
-      next: (result: any) => {
+      next: (result: APIResponse) => {
         this.clientProjectList = result.data;
         console.log('this.clientProjectList: ', this.clientProjectList);
       },
@@ -76,7 +77,7 @@ export class ClientProjectComponent implements OnInit {
       },
     });
   }
-  
+
   onGetAllClient() {
     this.clientService.getAllClients().subscribe({
       next: (result: any) => {
@@ -118,6 +119,7 @@ export class ClientProjectComponent implements OnInit {
           this.clientProjectList = result.data;
           console.log('this.employeeList: ', this.employeeList);
           this.onGetAllClientProjects()
+          this.projectForm.reset();
         },
         error: (error) => {
           console.log(error);
@@ -127,4 +129,16 @@ export class ClientProjectComponent implements OnInit {
         },
       });
   }
+
+  onEditClientProject(item:IClientProject){
+    console.log('item: ', item);
+    this.projectForm.patchValue({
+      ...item,
+      startDate: item.startDate ? new Date(item.startDate).toISOString().substring(0, 10) : '',
+      expectedEndDate: item.expectedEndDate ? new Date(item.expectedEndDate).toISOString().substring(0, 10) : '',
+      completedDate: item.completedDate ? new Date(item.completedDate).toISOString().substring(0, 10) : ''
+    });
+  }
+
+
 }

@@ -3,21 +3,27 @@ import { ClientService } from '../../services/client.service';
 import { APIResponse } from '../../model/interface/role';
 import { FormsModule } from '@angular/forms';
 import { Client } from '../../model/class/Client';
+import { AsyncPipe, JsonPipe } from '@angular/common';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-client',
-  imports: [FormsModule],
+  imports: [FormsModule,JsonPipe,AsyncPipe],
   templateUrl: './client.component.html',
   styleUrl: './client.component.css',
 })
 export class ClientComponent implements OnInit {
   clientList: Client[] = [];
   clientObj: Client = new Client();
+  userList$ : Observable<any> = new Observable<any>
   clientService = inject(ClientService);
-
+   
   ngOnInit(): void {
     this.onGetAllClient();
+    this.userList$ = this.clientService.getAllUsersFromPlaceholderAPI()
   }
+
+
 
   onGetAllClient() {
     this.clientService.getAllClients().subscribe({

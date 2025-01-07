@@ -73,3 +73,12 @@ Angular forms दो तरीकों से काम कर सकते ह
 Template-Driven Forms: Forms और validations HTML टेम्पलेट में लिखे जाते हैं। (ngModel आधारित)
 Reactive Forms: Forms और validations TypeScript क्लास में लिखे जाते हैं।
 आपका कोड Template-Driven Forms पर आधारित है, जिसमें ngModel और required validator का उपयोग हुआ है।
+
+
+Pipe is used just format the data before passing to the subscribe method.
+there are so many types of pipes in Angular. Some Important one are. 
+   JSON Pipe -> json object UI pe print kr skte hai [object,object] ki jagah object sach mein dikhega
+   Async Pipe -> Api se response return krke usko ek Observable varibale mein hold kr lete hai and HTML mein hi usko async pipe ke jariye subscribe krte hai.
+
+RXJS
+

@@ -17,6 +17,20 @@ export interface IEmployee {
   role: string;
 }
 
+export interface IClientProject {
+    empName:         string;
+    empId:           number;
+    empCode:         string;
+    empEmailId:      string;
+    empDesignation:  string;
+    projectName:     string;
+    startDate:       Date;
+    expectedEndDate: Date;
+    completedDate?: Date;
+    clientName:      string;
+    clientProjectId: number;
+}
+
 export interface APIResponse {
   message: string;
   result: boolean;

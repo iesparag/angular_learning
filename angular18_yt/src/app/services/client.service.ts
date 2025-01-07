@@ -18,6 +18,11 @@ export class ClientService {
     );
   }
 
+
+  getAllUsersFromPlaceholderAPI(){
+    return this.http.get<APIResponse>("https://jsonplaceholder.typicode.com/users");
+  }
+
   addUpdateClient(clientObj: Client): Observable<APIResponse> {
     return this.http.post<APIResponse>(
       `${this.apiBaseUrl}/AddUpdateClient`,
