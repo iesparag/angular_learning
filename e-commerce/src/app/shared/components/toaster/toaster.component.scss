@@ -1,0 +1,46 @@
+.toaster {
+    position: fixed;
+    z-index: 9999;
+    padding: 10px;
+    transition: opacity 0.5s;
+  }
+  
+  .top-left {
+    top: 20px;
+    left: 20px;
+  }
+  
+  .top-right {
+    top: 20px;
+    right: 20px;
+  }
+  
+  .bottom-left {
+    bottom: 20px;
+    left: 20px;
+  }
+  
+  .bottom-right {
+    bottom: 20px;
+    right: 20px;
+  }
+  
+  .toast {
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #fff;
+  }
+  
+  .success {
+    background-color: green;
+  }
+  
+  .error {
+    background-color: red;
+  }
+  
+  .warning {
+    background-color: orange;
+  }
+  

@@ -1,0 +1,6 @@
+<div *ngIf="toasterMessage" class="toaster" [ngClass]="toasterMessage.position">
+    <div class="toast" [ngClass]="toasterMessage.type">
+      <span>{{ toasterMessage.message }}</span>
+    </div>
+  </div>
+  

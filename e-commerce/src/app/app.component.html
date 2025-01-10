@@ -1,0 +1,9 @@
+<!-- Header -->
+<app-header *ngIf="showLayout"></app-header>
+
+<!-- Main Content -->
+<router-outlet></router-outlet>
+<app-toaster></app-toaster>
+
+<!-- Footer -->
+<app-footer *ngIf="showLayout"></app-footer>
