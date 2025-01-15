@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { Constants } from '../constants/constants-app';
+import { Store } from '@ngrx/store';
+import { selectAccessToken } from '../../features/auth/state/auth.selectors';
 
 
 @Injectable({
@@ -12,7 +14,7 @@ import { Constants } from '../constants/constants-app';
 export class AuthService {
   private apiUrl = environment.apiBaseUrl; // Replace with your API URL
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private store: Store) {}
 
   login(credentials: { email: string; password: string }): Observable<any> {
     return this.http.post(`${this.apiUrl}/${Constants.users.USER_LOGIN}`, credentials).pipe(
@@ -30,9 +32,13 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('user');
   }
 
-  isAuthenticated(): boolean {
-    return !!localStorage.getItem('accessToken'); // Return true if accessToken exists
+  isAuthenticated():Observable<boolean> {
+    return this.store.select(selectAccessToken).pipe(
+      map((accessToken:any) => !!accessToken) // Check if the access token exists
+    );
   }
 }

@@ -4,6 +4,10 @@ import { AuthService } from '../../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { ToasterService } from '../../../core/services/toaster.service';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../core/state/app.state';
+import { loginStart } from '../state/auth.actions';
+import { selectAuthError, selectIsAuthenticated } from '../state/auth.selectors';
 
 @Component({
   selector: 'app-login',
@@ -15,16 +19,19 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup; // Declare the login form group
   errorMessage: string = ''; // To store error message
   isLoading: boolean = false; // To show a loading spinner if necessary
-
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router,private toasterService: ToasterService ) {
+  isAuthenticated$: any;
+  authError$: any;
+  constructor(private fb: FormBuilder, private store: Store<AppState> ,private authService: AuthService, private router: Router,private toasterService: ToasterService ) {
     // Initialize the form with FormBuilder
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]], // Email field with validation
       password: ['', [Validators.required, Validators.minLength(6)]], // Password field with validation
     });
   }
-
+ 
   ngOnInit(): void {
+    this.isAuthenticated$ = this.store.select(selectIsAuthenticated);
+    this.authError$ = this.store.select(selectAuthError);
     // Any logic to be run when the component is initialized can go here
   }
 
@@ -33,26 +40,15 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.isLoading = true;
       const { email, password } = this.loginForm.value;
+      this.store.dispatch(loginStart({ email, password }));
+      // this.store.select(selectIsAuthenticated).subscribe(isAuthenticated => {
+      //   console.log('isAuthenticated: ', isAuthenticated);
+      //   debugger
+      //   if (isAuthenticated) {
+      //     this.router.navigate(['/products']); // Redirect to /products after login success
+      //   }
+      // });
 
-      // Authenticate using AuthService
-      this.authService.login({ email, password }).subscribe({
-        next: (response) => {
-          console.log('response: ', response);
-          this.isLoading = false;
-
-          // Check for successful login and redirect to /products
-          if (response.success) {
-            debugger
-            this.router.navigate(['/products']); // Redirect to products page
-            this.toasterService.show('Login successful!', 'success', 3, 'top-right');
-          }
-        },
-        error: (error) => {
-          this.isLoading = false;
-          this.errorMessage = 'Invalid email or password';
-          this.toasterService.show('Login failed. Please check your credentials.', 'error', 3, 'top-right');
-        },
-      });
     }
   }
 }

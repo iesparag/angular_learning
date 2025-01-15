@@ -1,7 +1,24 @@
-<nav>
+<nav class="navbar">
+  <div class="navbar-brand">
+    <a routerLink="#">MyStore</a>
+  </div>
+  <div class="navbar-links">
     <ul>
-      <li><a routerLink="/products">Products</a></li>
-      <li><a routerLink="/cart">Cart</a></li>
-      <li><a routerLink="/checkout">Checkout</a></li>
+      <li><a routerLink="#">Men</a></li>
+      <li><a routerLink="#">Women</a></li>
+      <li><a routerLink="#">Kids</a></li>
+      <li><a routerLink="#">Home & Living</a></li>
+      <li><a routerLink="#">Beauty</a></li>
     </ul>
-  </nav>
+  </div>
+  <div class="navbar-search">
+    <input type="text" placeholder="Search for products, brands, and more" />
+  </div>
+  <div class="navbar-icons">
+    <a routerLink="#" class="login">Login</a>
+    <a routerLink="#" class="cart">
+      <mat-icon>shopping_cart</mat-icon>
+      <span class="cart-count">2</span>
+    </a>
+  </div>
+</nav>
