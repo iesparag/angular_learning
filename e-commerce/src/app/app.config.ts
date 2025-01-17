@@ -1,20 +1,30 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
-import { routes } from './app.routes';
-import { provideHttpClient } from '@angular/common/http';
-import {provideStore } from '@ngrx/store'
-import { appReducer } from './core/state/app.reducer';
-import { provideEffects } from '@ngrx/effects';
-import { provideStoreDevtools } from '@ngrx/store-devtools';
-import { AuthEffects } from './features/auth/state/auth.effects';
+    import {  ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
+    import { provideRouter, withDebugTracing } from '@angular/router';
+    import { routes } from './app.routes';
+    import { provideHttpClient, withInterceptors } from '@angular/common/http';
+    import { provideStore } from '@ngrx/store';
+    import { appReducer } from './core/state/app.reducer';
+    import { provideEffects } from '@ngrx/effects';
+    import { provideStoreDevtools } from '@ngrx/store-devtools';
+    import { AuthEffects } from './features/auth/state/auth.effects';
+    import { MatSnackBarModule } from '@angular/material/snack-bar';
+    import { provideAnimations } from '@angular/platform-browser/animations'; // Add this line
+    import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import { LandingpageEffects } from './features/landing-page/state/landing-page.effects';
+import { ProductEffects } from './features/products/state/product.effects';
 
-export const appConfig: ApplicationConfig = {
-  providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
-    provideHttpClient(),
-    provideStore(appReducer),
-    provideEffects([AuthEffects]), 
-    provideStoreDevtools({ maxAge: 25 }),
-  ],
-};
+
+    export const appConfig: ApplicationConfig = {
+      providers: [
+        provideZoneChangeDetection({ eventCoalescing: true }),
+        provideRouter(routes),
+        provideHttpClient(withInterceptors([AuthInterceptor])),
+        provideStore(appReducer),
+        provideEffects([AuthEffects,LandingpageEffects,ProductEffects]),
+        provideStoreDevtools({ maxAge: 25 }),
+        provideAnimations(), // Add this line for animations support
+        importProvidersFrom(MatSnackBarModule),
+        
+       
+      ],
+    };

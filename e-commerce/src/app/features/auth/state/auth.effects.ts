@@ -1,15 +1,19 @@
 import { inject, Injectable } from '@angular/core';
-import {  Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as AuthActions from './auth.actions';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { AuthService } from '../../../core/services/auth.service';
+import { Router } from '@angular/router';
+import { ToastService } from '../../../core/services/toast.service';
 
 @Injectable()
 export class AuthEffects {
   // constructor(private actions$: Actions, private authService:AuthService) {}
 
-  actions$ = inject(Actions)
-  authService = inject(AuthService)
+  actions$ = inject(Actions);
+  authService = inject(AuthService);
+  router = inject(Router);
+  toastService = inject(ToastService);
 
   login$ = createEffect(() =>
     this.actions$.pipe(
@@ -28,13 +32,28 @@ export class AuthEffects {
             }
           }),
           catchError((error) =>
-            of(AuthActions.loginFailure({ error: error.message || 'An error occurred' }))
+            of(
+              AuthActions.loginFailure({
+                error: error.message || 'An error occurred',
+              })
+            )
           )
         )
       )
     )
   );
-  
+
+  redirectAfterLogin$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.loginSuccess), // Jab loginSuccess action dispatch hoga
+        tap(() => {
+          this.router.navigate(['/home']); // User ko /products pe redirect karein
+        })
+      ),
+    { dispatch: false } // Is effect ka koi naya action dispatch nahi hoga
+  );
+
   loginSuccess$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -43,8 +62,50 @@ export class AuthEffects {
           localStorage.setItem('user', JSON.stringify(user));
           localStorage.setItem('accessToken', accessToken);
           localStorage.setItem('refreshToken', refreshToken);
+          // this.toastService.showSuccess('Login successful!');
         })
       ),
     { dispatch: false }
   );
+
+  loginFailure$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.loginFailure),
+        tap(({ error }) => {
+          this.toastService.showError(error || 'Invalid login credentials');
+        })
+      ),
+    { dispatch: false }
+  );
+
+  logout$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.logout),
+      switchMap(() =>
+        this.authService.logout().pipe(
+          map((item) => {
+            return AuthActions.logoutSuccess()}),
+          catchError((error) => of(AuthActions.logoutFailure({ error })))
+        )
+      )
+    )
+  );
+
+  // Handle logout success and redirect to login page
+  logoutSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.logoutSuccess),
+        tap(() => {
+          localStorage.removeItem('user');
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
+          this.toastService.showSuccess("User Logged Out Successfully");
+          this.router.navigate(['/login']);
+        })
+      ),
+    { dispatch: false }
+  );
+
 }

@@ -21,11 +21,28 @@ export const authReducer = createReducer(
       isAuthenticated: true
     })}
   ),
-  on(AuthActions.loginFailure, (state, { error }) => ({
+  on(AuthActions.loginFailure, (state, { error }) => {
+    console.log('error: ', error);
+    return ({
     ...state,
     success: false,
     error,
     isAuthenticated:false,
+  })}),
+  on(AuthActions.logout, (state) => ({
+    ...state,
+    isAuthenticated: true,
   })),
-  on(AuthActions.logout, () => initialState)
+  on(AuthActions.logoutSuccess, (state) => ({
+    ...state,
+    isAuthenticated: false,
+    user: null,
+    accessToken:null,
+    refreshToken:null,
+    
+  })),
+  on(AuthActions.logoutFailure, (state, { error }) => ({
+    ...state,
+    error,
+  }))
 );

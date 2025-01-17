@@ -17,6 +17,7 @@
       firstName: string;
       lastName: string;
       email: string;
+      avatar?: string;
       role: string;
       wishlist: any[];
       cart: any[];

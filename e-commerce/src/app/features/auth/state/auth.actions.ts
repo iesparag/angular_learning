@@ -1,4 +1,4 @@
-import { createAction, props } from '@ngrx/store';
+import { createAction, emptyProps, props } from '@ngrx/store';
 
 export const loginStart = createAction(
   '[Auth] Login Start',
@@ -27,4 +27,12 @@ export const loginFailure = createAction(
   props<{ error: string }>()
 );
 
-export const logout = createAction('[Auth] Logout');
+export const logout = createAction('[Auth] Logout'); // Logout initiation
+export const logoutSuccess = createAction(
+  '[Auth] Logout Success',
+  // props:<{message:string}>()
+); // On successful logout
+export const logoutFailure = createAction(
+  '[Auth] Logout Failure',
+  props<{ error: any }>()
+);

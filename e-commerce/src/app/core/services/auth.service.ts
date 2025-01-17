@@ -30,10 +30,10 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/${Constants.users.USER_REGISTER}`, user);
   }
 
-  logout() {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('user');
+  logout(): Observable<any> {
+    const res = this.http.post(`${this.apiUrl}/${Constants.users.USER_LOGOUT}`,{})
+
+    return res
   }
 
   isAuthenticated():Observable<boolean> {

@@ -9,18 +9,17 @@ import { selectAccessToken } from '../../features/auth/state/auth.selectors';
 export const authGuard: CanActivateFn = (route, state): Observable<boolean> => {
   const store = inject(Store); // Inject Store
   const router = inject(Router); // Inject Router
+  console.log('store: ', store.subscribe((result)=> console.log(result)));
 
-  // Use `first()` or `take(1)` to ensure we get the first emitted value from the store and check it.
   return store.select(selectAccessToken).pipe(
-    first(), // Ensures the observable completes after the first emission
     map((accessToken) => {
-      console.log('Current accessToken:', accessToken); // Log the token to debug
+      console.log('Current accessToken:', accessToken); 
       if (accessToken) {
-        // If the user is authenticated, redirect to the products page
-        router.navigate(['/products']);
-        return false; // Prevent navigation to the current route
+        
+        return true;
       } else {
-        return true; // Allow navigation if not authenticated
+        router.navigate(['/login']);
+        return false; 
       }
     })
   );
