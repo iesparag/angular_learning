@@ -12,6 +12,7 @@
     import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { LandingpageEffects } from './features/landing-page/state/landing-page.effects';
 import { ProductEffects } from './features/products/state/product.effects';
+import { CartEffects } from './features/cart/state/cart.effects';
 
 
     export const appConfig: ApplicationConfig = {
@@ -20,7 +21,7 @@ import { ProductEffects } from './features/products/state/product.effects';
         provideRouter(routes),
         provideHttpClient(withInterceptors([AuthInterceptor])),
         provideStore(appReducer),
-        provideEffects([AuthEffects,LandingpageEffects,ProductEffects]),
+        provideEffects([AuthEffects,LandingpageEffects,ProductEffects,CartEffects]),
         provideStoreDevtools({ maxAge: 25 }),
         provideAnimations(), // Add this line for animations support
         importProvidersFrom(MatSnackBarModule),

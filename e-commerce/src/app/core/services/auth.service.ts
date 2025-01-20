@@ -6,6 +6,8 @@ import { environment } from '../../../environments/environment';
 import { Constants } from '../constants/constants-app';
 import { Store } from '@ngrx/store';
 import { selectAccessToken } from '../../features/auth/state/auth.selectors';
+import { AuthState } from '../../features/auth/state/auth.state';
+import { ApiResponse } from '../types/response.interface';
 
 
 @Injectable({

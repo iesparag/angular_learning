@@ -1,12 +1,11 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import { ProductState } from './product.state';
 
-export const selectProductState = createFeatureSelector<ProductState>('product');
+export const selectProductState = createFeatureSelector<ProductState>('productPage');
 
 export const selectProducts = createSelector(
   selectProductState,
   (state) => {
-    console.log('state: ate.products', state);
    return state.products
   }
 );

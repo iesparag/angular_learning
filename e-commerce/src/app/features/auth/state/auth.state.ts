@@ -24,8 +24,8 @@
     } | null;
     accessToken: string | null;
     refreshToken: string | null;
-    success: boolean;
-    error: string | null;
+    success?: boolean;
+    error?: string | null;
     isAuthenticated: boolean,
   }
   
