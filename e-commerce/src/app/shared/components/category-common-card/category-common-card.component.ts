@@ -13,7 +13,10 @@ export class CategoryCommonCardComponent {
   @Input() categories: Category[] = []; // Accept the categories array
   @Input() columns: number = 4;
 
-  constructor(private router: Router){}
+
+  constructor(private router: Router){
+    console.log('this.categories: ', this.categories);
+  }
 
   onCategoryClick(category: Category) {
     this.router.navigate(['/products'], { queryParams: { categoryId: category._id } });

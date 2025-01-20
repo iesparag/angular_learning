@@ -9,11 +9,12 @@ export const productReducer = createReducer(
     loading: true,
     error: null,
   })),
-  on(loadProductsSuccess, (state, { products }) => ({
+  on(loadProductsSuccess, (state, { products }) => {
+    return ({
     ...state,
     loading: false,
-    products,
-  })),
+    products
+  })}),
   on(loadProductsFailure, (state, { error }) => ({
     ...state,
     loading: false,

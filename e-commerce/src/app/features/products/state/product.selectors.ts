@@ -5,7 +5,10 @@ export const selectProductState = createFeatureSelector<ProductState>('product')
 
 export const selectProducts = createSelector(
   selectProductState,
-  (state) => state.products
+  (state) => {
+    console.log('state: ate.products', state);
+   return state.products
+  }
 );
 
 export const selectLoading = createSelector(
