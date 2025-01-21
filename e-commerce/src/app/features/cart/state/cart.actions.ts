@@ -17,6 +17,7 @@ export const addToCartFailure = createAction(
   '[Cart] Add To Cart Failure',
   props<{ error: string }>()
 );
+////////////////////////////////////////////////////////
 
 export const updateProductQuantity = createAction(
   '[Cart] Update Product Quantity',
@@ -44,3 +45,35 @@ export const getUserCartFailure = createAction(
   '[Cart] Get User Cart Failure',
   props<{ error: string }>()
 );
+
+///////////////////////////////////////////////////////////////
+export const deleteItemFromCartStart = createAction(
+  '[Cart] delete item from cart',
+  props<{ productId: string}>()
+);
+
+export const deleteItemFromCartSuccess = createAction(
+  '[Cart] delete item from cart Success',
+  props<{ cartItem: CartItem }>()
+);
+
+export const deleteItemFromCartFailure = createAction(
+  '[Cart] delete item from cart Failure',
+  props<{ error: string }>()
+);
+
+// ////////////////////////////////////////////////////////////////
+// export const moveToSaveForLaterItemStart = createAction(
+//   '[Cart] move to save for later from cart',
+//   props<{ productId: string}>()
+// );
+
+// export const moveToSaveForLaterItemSuccess = createAction(
+//   '[Cart] move to save for later from cart Success',
+//   props<{ cartItem: CartItem }>()
+// );
+
+// export const moveToSaveForLaterItemFailure = createAction(
+//   '[Cart] move to save for later from cart Failure',
+//   props<{ error: string }>()
+// );

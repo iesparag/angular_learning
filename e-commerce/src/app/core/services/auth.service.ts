@@ -1,46 +1,117 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { Observable, throwError, BehaviorSubject } from 'rxjs';
+import { catchError, map, tap, switchMap, filter, finalize } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { Constants } from '../constants/constants-app';
 import { Store } from '@ngrx/store';
 import { selectAccessToken } from '../../features/auth/state/auth.selectors';
 import { AuthState } from '../../features/auth/state/auth.state';
 import { ApiResponse } from '../types/response.interface';
-
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  router = inject(Router)
   private apiUrl = environment.apiBaseUrl; // Replace with your API URL
+  private isRefreshing = false; // To avoid multiple refresh calls
+  private refreshTokenSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
 
-  constructor(private http: HttpClient, private store: Store) {}
+  constructor(private http: HttpClient, private store: Store<AuthState>) {}
 
+  // Login method
   login(credentials: { email: string; password: string }): Observable<any> {
     return this.http.post(`${this.apiUrl}/${Constants.users.USER_LOGIN}`, credentials).pipe(
       tap((response: any) => {
-        localStorage.setItem('accessToken', response.data.accessToken); 
-        localStorage.setItem('refreshToken', response.data.refreshToken); 
-        localStorage.setItem('user', JSON.stringify(response.data.user)); 
+        this.saveTokens(response.data.accessToken, response.data.refreshToken);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
       })
     );
   }
 
+  // Signup method
   signup(user: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/${Constants.users.USER_REGISTER}`, user);
   }
 
+  // Logout method
   logout(): Observable<any> {
-    const res = this.http.post(`${this.apiUrl}/${Constants.users.USER_LOGOUT}`,{})
-
-    return res
+    return this.http.post(`${this.apiUrl}/${Constants.users.USER_LOGOUT}`, {}).pipe(
+      tap(() => {
+        this.clearTokens();
+      })
+    );
   }
 
-  isAuthenticated():Observable<boolean> {
+  // Check if user is authenticated
+  isAuthenticated(): Observable<boolean> {
     return this.store.select(selectAccessToken).pipe(
-      map((accessToken:any) => !!accessToken) // Check if the access token exists
+      map((accessToken: any) => !!accessToken) // Check if access token exists
     );
+  }
+
+  // Get access token
+  getAccessToken(): string | null {
+    return localStorage.getItem('accessToken');
+  }
+
+  // Refresh token logic
+  refreshAccessToken(): Observable<any> {
+    if (this.isRefreshing) {
+      // Wait until refreshTokenSubject has a new value
+      return this.refreshTokenSubject.pipe(
+        filter((token) => token !== null),
+        switchMap(() => this.refreshTokenSubject.asObservable())
+      );
+    } else {
+      this.isRefreshing = true;
+      const refreshToken = this.getRefreshToken();
+
+      if (!refreshToken) {
+        this.isRefreshing = false;
+        return throwError(() => new Error('No refresh token available'));
+      }
+
+      return this.http.post(`${this.apiUrl}/${Constants.users.USER_GENERATE_ACCESS_BY_REFRESH}`, {
+        refreshToken,
+      }).pipe(
+        tap((response: any) => {
+          const newAccessToken = response.data.accessToken;
+          const newRefreshToken = response.data.refreshToken;
+          this.saveTokens(newAccessToken, newRefreshToken);
+          this.refreshTokenSubject.next(newAccessToken);
+        }),
+        catchError((error) => {
+          this.clearTokens();
+          return throwError(() => error);
+        }),
+        finalize(() => {
+          this.isRefreshing = false;
+        })
+      );
+    }
+  }
+
+  // Helper methods for token management
+  private saveTokens(accessToken: string, refreshToken: string): void {
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
+  }
+
+  public clearTokens(): void {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('user');
+  }
+
+  private getRefreshToken(): string | null {
+    return localStorage.getItem('refreshToken');
+  }
+
+  navigateToLogin(): void {
+    // Replace with your router logic to navigate to the login page
+    this.router.navigate(['/login']); // Example: Redirect to login
   }
 }

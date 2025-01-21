@@ -14,6 +14,8 @@ export interface Product {
   priceAfterDiscount: number;
 }
 
+
+
 export interface ProductState {
   products: Product[];
   loading: boolean;

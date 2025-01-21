@@ -10,19 +10,50 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root',
 })
 export class CartService {
-  private apiUrl = environment.apiBaseUrl;;
+  private apiUrl = environment.apiBaseUrl;
   constructor(private http: HttpClient) {}
 
   // Add item to cart
-  addItemToCart(productId: string, quantity: number): Observable<ApiResponse<CartItem>> {
-    return this.http.post<ApiResponse<CartItem>>(`${this.apiUrl}/${Constants.buyer.CART}`, { productId, quantity });
+  addItemToCart(
+    productId: string,
+    quantity: number
+  ): Observable<ApiResponse<CartItem>> {
+    return this.http.post<ApiResponse<CartItem>>(
+      `${this.apiUrl}/${Constants.buyer.CART}`,
+      { productId, quantity }
+    );
   }
 
-  updateProductQuantity(productId: string, quantity: number): Observable<ApiResponse<CartItem>> {
-    return this.http.patch<ApiResponse<CartItem>>(`${this.apiUrl}/${Constants.buyer.CART}`, { productId, quantity });
+  updateProductQuantity(
+    productId: string,
+    quantity: number
+  ): Observable<ApiResponse<CartItem>> {
+    return this.http.patch<ApiResponse<CartItem>>(
+      `${this.apiUrl}/${Constants.buyer.CART}`,
+      { productId, quantity }
+    );
   }
+
+  deleteItemFromCart(
+    productId: string
+  ): Observable<ApiResponse<CartItem>> {
+    return this.http.delete<ApiResponse<CartItem>>(
+      `${this.apiUrl}/${Constants.buyer.CART}/${productId}`
+    );
+  }
+
+
+  // moveToSaveForLaterFromCart(
+  //   productId: string
+  // ): Observable<ApiResponse<CartItem>> {
+  //   return this.http.post<ApiResponse<CartItem>>(
+  //     `${this.apiUrl}/${Constants.buyer.CART}/${productId}/${Constants.buyer.CART_TO_SAVE_FOR_LATER}`,{}
+  //   );
+  // }
 
   getUserCartService(): Observable<ApiResponse<CartItem[]>> {
-    return this.http.get<ApiResponse<CartItem[]>>(`${this.apiUrl}/${Constants.buyer.CART}`);
+    return this.http.get<ApiResponse<CartItem[]>>(
+      `${this.apiUrl}/${Constants.buyer.CART}`
+    );
   }
 }

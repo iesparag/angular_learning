@@ -25,13 +25,13 @@ export const selectCartError = createSelector(
 // Select a specific cart item by product ID
 export const selectCartItemById = (productId: string) =>
   createSelector(selectAllCartItems, (items) =>
-    items.find((item) => item.product._id === productId)
+    items.find((item) => item.product.productId === productId)
   );
 
 // Select the total quantity of items in the cart
 export const selectCartTotalQuantity = createSelector(
   selectAllCartItems,
-  (items) => items.reduce((total, item) => total + item.quantity, 0)
+  (items) => items.length
 );
 
 // Select the total price of items in the cart

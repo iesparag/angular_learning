@@ -1,1 +1,56 @@
-<p>cart works!</p>
+<div class="cart-page">
+  <!-- Left Section: Shopping Cart -->
+  <div *ngIf="userCartList$ | async as userCartList; else loadingOrEmptyCart">
+    <!-- Only show the cart section if the length of userCartList is greater than 0 -->
+    <div class="cart-section" *ngIf="userCartList.length > 0; else emptyCart">
+      <div class="cart-items">
+        <a routerLink="/home"><h3>Shopping Continue >></h3></a>
+        <p class="heading">Your Items</p>
+        <p>
+          You have
+          <strong>{{ userCartList.length }}</strong> item(s) in your cart
+        </p>
+
+        <div class="cart-list">
+          <ng-container *ngFor="let item of userCartList">
+            <app-cart-common-card [cartItem]="item"></app-cart-common-card>
+          </ng-container>
+        </div>
+
+        <!-- Total Cart Amount -->
+        <div class="total_cart_amount">
+          <h3>
+            Total:
+            {{ totalAmount | currency : "INR" : "symbol" : "1.0-0" : "en-IN" }}
+          </h3>
+        </div>
+      </div>
+
+      <!-- Right Section: Payment -->
+      <div class="cart-payment">
+        <h1>Payment will be here</h1>
+      </div>
+    </div>
+
+    <!-- Empty Cart Template -->
+    <ng-template #emptyCart>
+      <div class="empty-cart-message">
+        <h3>Your cart is empty. Start shopping now!</h3>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- save for later section start -->
+  <div class="cart-section">
+    <p class="heading">Save For Later</p>
+    
+  </div>
+  <!-- save for later section End -->
+
+  <!-- Loading or Empty Cart Template -->
+  <ng-template #loadingOrEmptyCart>
+    <div class="loading-message">
+      <h3>Loading cart...</h3>
+    </div>
+  </ng-template>
+</div>

@@ -8,6 +8,9 @@ export const Constants = {
     buyer:{
         CATEGORIES:"buyer/categories",
         PRODUCTS:"buyer/products",
-        CART:"buyer/cart"
+        CART:"buyer/cart",
+        CART_TO_SAVE_FOR_LATER:"move-to-save-for-later",
+        WISHLIST:"buyer/wishlist"
+        
     }
 }

@@ -1,7 +1,15 @@
-import { Product } from '../../../features/products/state/product.state';
+
+export interface cartProduct {
+  productId: string;
+  name: string;
+  description: string;
+  price: number;
+  images: string[];
+  videos: string[];
+}
 
 export interface CartItem {
-  product: Product;
+  product: cartProduct;
   quantity: number;
 }
 

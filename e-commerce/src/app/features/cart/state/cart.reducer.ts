@@ -14,8 +14,6 @@ export const cartReducer = createReducer(
 
   // Get user cart: success
   on(CartActions.getUserCartSuccess, (state, { response }) => {
-    console.log('response: ', response);
-    debugger
     return ({
     ...state,
     isLoading: false,
@@ -40,7 +38,7 @@ export const cartReducer = createReducer(
   // Add to cart: success
   on(CartActions.addToCartSuccess, (state, { cartItem }) => {
     const existingItemIndex = state.items.findIndex(
-      (item) => item.product._id === cartItem.product._id
+      (item) => item.product.productId === cartItem.product.productId
     );
 
     let updatedItems = [...state.items];
@@ -78,10 +76,10 @@ export const cartReducer = createReducer(
 
   // Update product quantity: success
   on(CartActions.updateProductQuantitySuccess, (state, { cartItem }) => {
-    const updatedItems = state.items.map((item) =>
-      item.product._id === cartItem.product._id
+    const updatedItems = state.items.map((item) =>{
+      return item.product.productId === cartItem.product.productId
         ? { ...item, quantity: cartItem.quantity }
-        : item
+        : item}
     );
 
     return {
@@ -96,5 +94,55 @@ export const cartReducer = createReducer(
     ...state,
     isLoading: false,
     error,
-  }))
+  })),
+  ////////////////////////////////////
+  // Update product quantity: start loading
+  on(CartActions.deleteItemFromCartStart, (state) => ({
+    ...state,
+    isLoading: true,
+    error: null,
+  })),
+
+  // filter out the product on delete Success
+  on(CartActions.deleteItemFromCartSuccess, (state, { cartItem }) => {
+    const updatedItems = state.items.filter((item) =>item.product.productId !== cartItem.product.productId);
+    return {
+      ...state,
+      isLoading: false,
+      items: updatedItems,
+    };
+  }),
+
+  // Update product quantity: failure
+  on(CartActions.deleteItemFromCartFailure, (state, { error }) => ({
+    ...state,
+    isLoading: false,
+    error,
+  })),
+
+  // ///////////////////////////////////////////
+
+
+  // on(CartActions.moveToSaveForLaterItemStart, (state) => ({
+  //   ...state,
+  //   isLoading: true,
+  //   error: null,
+  // })),
+
+  // // filter out the product on delete Success
+  // on(CartActions.moveToSaveForLaterItemSuccess, (state, { cartItem }) => {
+  //   const updatedItems = state.items.filter((item) =>item.product.productId !== cartItem.product.productId);
+  //   return {
+  //     ...state,
+  //     isLoading: false,
+  //     items: updatedItems,
+  //   };
+  // }),
+
+  // // Update product quantity: failure
+  // on(CartActions.moveToSaveForLaterItemFailure, (state, { error }) => ({
+  //   ...state,
+  //   isLoading: false,
+  //   error,
+  // }))
 );

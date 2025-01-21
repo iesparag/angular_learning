@@ -26,21 +26,55 @@ export class CartEffects {
     )
   );
 
-  updateProductQuantity$ = createEffect(() =>
-    this.actions$.pipe(
+  updateProductQuantity$ = createEffect(() =>{
+    return this.actions$.pipe(
       ofType(CartActions.updateProductQuantity),
-      mergeMap(({ productId, quantity }) =>
-        this.cartService.updateProductQuantity(productId, quantity).pipe(
+      mergeMap(({ productId, quantity }) =>{
+      return  this.cartService.updateProductQuantity(productId, quantity).pipe(
           map((response) =>
             CartActions.updateProductQuantitySuccess({ cartItem: response.data })
           ),
           catchError((error) =>
             of(CartActions.updateProductQuantityFailure({ error: error.message }))
           )
-        )
+        )}
       )
-    )
+    )}
   );
+
+
+  DeleteItemFromUserCart$ = createEffect(() =>{
+    return this.actions$.pipe(
+      ofType(CartActions.deleteItemFromCartStart),
+      mergeMap(({ productId }) =>{
+      return  this.cartService.deleteItemFromCart(productId).pipe(
+          map((response) =>
+            CartActions.deleteItemFromCartSuccess({ cartItem: response.data })
+          ),
+          catchError((error) =>
+            of(CartActions.deleteItemFromCartFailure({ error: error.message }))
+          )
+        )}
+      )
+    )}
+  );
+
+
+  // MoveToSaveForLaterFromCart$ = createEffect(() =>{
+  //   return this.actions$.pipe(
+  //     ofType(CartActions.moveToSaveForLaterItemStart),
+  //     mergeMap(({ productId }) =>{
+  //     return  this.cartService.moveToSaveForLaterFromCart(productId).pipe(
+  //         map((response) =>
+  //           CartActions.moveToSaveForLaterItemSuccess({ cartItem: response.data })
+  //         ),
+  //         catchError((error) =>
+  //           of(CartActions.moveToSaveForLaterItemFailure({ error: error.message }))
+  //         )
+  //       )}
+  //     )
+  //   )}
+  // );
 
   getUserCart$ = createEffect(() =>
     this.actions$.pipe(

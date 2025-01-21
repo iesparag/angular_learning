@@ -16,13 +16,13 @@
   </div>
   <div class="navbar-icons">
     <!-- Conditional Rendering for Auth -->
-    <a routerLink="/favorites" class="favorites">
+    <a routerLink="/wishlist" class="favorites">
       <mat-icon class="favorite-icon">favorite</mat-icon>
       <span class="favorites-count">5</span>
     </a>
     <a routerLink="/cart" class="cart">
       <mat-icon>shopping_cart</mat-icon>
-      <span class="cart-count">2</span>
+      <span class="cart-count">{{cartItemCount}}</span>
     </a>
     <ng-container *ngIf="user$ | async as user">
       <button mat-button [matMenuTriggerFor]="menu">

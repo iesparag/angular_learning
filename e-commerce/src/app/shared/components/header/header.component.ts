@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -9,6 +9,8 @@ import { CommonModule, JsonPipe } from '@angular/common';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatButtonModule} from '@angular/material/button';
 import { AuthState } from '../../../features/auth/state/auth.state';
+import { selectCartTotalQuantity } from '../../../features/cart/state/cart.selectors';
+import { getUserCart } from '../../../features/cart/state/cart.actions';
 
 @Component({
   selector: 'app-header',
@@ -17,16 +19,22 @@ import { AuthState } from '../../../features/auth/state/auth.state';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   user$: Observable<AuthState["user"]>;
   isAuthenticated$: Observable<boolean>;
   defaultAvatar = 'https://avatars.githubusercontent.com/u/103980322?v=4&size=64';
-
+  cartItemCount: number  = 0
 
   constructor(private store: Store) {
     // Subscribe to isAuthenticated selector
     this.user$ = this.store.select(selectUser);
     this.isAuthenticated$ = this.store.select(selectIsAuthenticated);
+    this.store.select(selectCartTotalQuantity).subscribe((res)=> this.cartItemCount = res )
+    
+  }
+
+  ngOnInit(): void {
+     this.store.dispatch(getUserCart())
   }
 
   onLogout(): void {
