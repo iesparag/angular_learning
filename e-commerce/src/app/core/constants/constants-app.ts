@@ -9,7 +9,8 @@ export const Constants = {
         CATEGORIES:"buyer/categories",
         PRODUCTS:"buyer/products",
         CART:"buyer/cart",
-        CART_TO_SAVE_FOR_LATER:"move-to-save-for-later",
+        moveItemFromCartToSaveForLater:"move-item-from-cart-to-sav-for-later",
+        CART_TO_CART:"move-to-cart",
         WISHLIST:"buyer/wishlist"
         
     }

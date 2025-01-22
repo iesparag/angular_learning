@@ -13,37 +13,20 @@ export class SaveForLaterEffects {
 
 
 
-  MoveToSaveForLaterFromCart$ = createEffect(() =>{
-    return this.actions$.pipe(
-      ofType(SaveForLaterActions.moveToSaveForLaterItemStart),
-      mergeMap(({ productId }) =>{
-      return  this.saveForLaterService.moveToSaveForLaterFromCart(productId).pipe(
-          map((response) =>
-            SaveForLaterActions.moveToSaveForLaterItemSuccess({ cartItem: response.data })
-          ),
-          catchError((error) =>
-            of(SaveForLaterActions.moveToSaveForLaterItemFailure({ error: error.message }))
-          )
-        )}
-      )
-    )}
-  );
-
-  // getUserCart$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(SaveForLaterActions.getUserCart),
-  //     mergeMap(() =>
-  //       this.cartService.getUserCartService().pipe(
-  //         map((response) =>{
-  //           console.log('response: ', response);
-  //         return  SaveForLaterActions.getUserCartSuccess({ response: response})
-  //         }
+  // MoveToSaveForLaterFromCart$ = createEffect(() =>{
+  //   return this.actions$.pipe(
+  //     ofType(SaveForLaterActions.moveToSaveForLaterItemStart),
+  //     mergeMap(({ productId }) =>{
+  //     return  this.saveForLaterService.moveToSaveForLaterFromCart(productId).pipe(
+  //         map((response) =>
+  //           SaveForLaterActions.moveToSaveForLaterItemSuccess({ cartItem: response.data })
   //         ),
   //         catchError((error) =>
-  //           of(SaveForLaterActions.updateProductQuantityFailure({ error: error.message }))
+  //           of(SaveForLaterActions.moveToSaveForLaterItemFailure({ error: error.message }))
   //         )
-  //       )
+  //       )}
   //     )
-  //   )
+  //   )}
   // );
+
 }

@@ -22,7 +22,6 @@ export const AuthInterceptor: HttpInterceptorFn = (
   // }
 
   const accessToken = authService.getAccessToken();
-  console.log('accessToken: ', accessToken);
   let authReq = req;
 
   // Add access token to header if available

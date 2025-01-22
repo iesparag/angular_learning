@@ -123,26 +123,79 @@ export const cartReducer = createReducer(
   // ///////////////////////////////////////////
 
 
-  // on(CartActions.moveToSaveForLaterItemStart, (state) => ({
-  //   ...state,
-  //   isLoading: true,
-  //   error: null,
-  // })),
+  on(CartActions.moveToSaveForLaterItemFromCartStart, (state) => ({
+    ...state,
+    isLoading: true,
+    error: null,
+  })),
 
-  // // filter out the product on delete Success
-  // on(CartActions.moveToSaveForLaterItemSuccess, (state, { cartItem }) => {
-  //   const updatedItems = state.items.filter((item) =>item.product.productId !== cartItem.product.productId);
-  //   return {
-  //     ...state,
-  //     isLoading: false,
-  //     items: updatedItems,
-  //   };
-  // }),
+  // filter out the product on delete Success
+  on(CartActions.moveToSaveForLaterItemFromCartSuccess, (state, { cartItem }) => {
+    const updatedItems = state.items.filter((item) =>item.product.productId !== cartItem.product.productId);
+    return {
+      ...state,
+      isLoading: false,
+      items: updatedItems,
+    };
+  }),
 
-  // // Update product quantity: failure
-  // on(CartActions.moveToSaveForLaterItemFailure, (state, { error }) => ({
-  //   ...state,
-  //   isLoading: false,
-  //   error,
-  // }))
+  // Update product quantity: failure
+  on(CartActions.moveToSaveForLaterItemFromCartFailure, (state, { error }) => ({
+    ...state,
+    isLoading: false,
+    error,
+  })),
+
+  // ///////////////////////////////////////////
+
+  on(CartActions.moveFromWishlistToCartStart, (state) => ({
+    ...state,
+    isLoading: true,
+    error: null,
+  })),
+
+  // filter out the product on delete Success
+  on(CartActions.moveFromWishlistToCartSuccess, (state, { cartItem }) => {
+    console.log('state: iiiiiiiiiiiiiiiiiiiiiiiii', state);
+    console.log('cartItem: ', cartItem);
+    const updatedItems = state.items.some((elem)=> elem.product.productId === cartItem.product.productId)
+    return {
+      ...state,
+      isLoading: false,
+      items: updatedItems ? state.items : [...state.items,cartItem],
+    };
+  }),
+
+  // Update product quantity: failure
+  on(CartActions.moveFromWishlistToCartFailure, (state, { error }) => ({
+    ...state,
+    isLoading: false,
+    error,
+  })),
+
+
+  // ///////////////////////////////////////////
+
+  on(CartActions.moveToWishlistFromCartStart, (state) => ({
+    ...state,
+    isLoading: true,
+    error: null,
+  })),
+
+  // filter out the product on delete Success
+  on(CartActions.moveToWishlistFromCartSuccess, (state, { cartItem }) => {
+    const updatedItems = state.items.filter((elem)=> elem.product.productId !== cartItem.product.productId)
+    return {
+      ...state,
+      isLoading: false,
+      items: updatedItems,
+    };
+  }),
+
+  // Update product quantity: failure
+  on(CartActions.moveToWishlistFromCartFailure, (state, { error }) => ({
+    ...state,
+    isLoading: false,
+    error,
+  }))
 );

@@ -3,6 +3,7 @@ import { WishlistState } from './wishlist.state';
 
 // Select the entire cart state
 export const selectWishlistState = createFeatureSelector<WishlistState>('wishlist');
+console.log('selectWishlistState:12334 ', selectWishlistState);
 
 // Select all cart items
 export const selectAllWishlistItems = createSelector(
@@ -14,6 +15,12 @@ export const selectAllWishlistItems = createSelector(
 export const selectWishlistLoading = createSelector(
   selectWishlistState,
   (state) => state.isLoading
+);
+
+// Select cart loading state
+export const selectWishlistTotalQuantity = createSelector(
+  selectWishlistState,
+  (state) => state.WishlistItems.length
 );
 
 // Select cart error

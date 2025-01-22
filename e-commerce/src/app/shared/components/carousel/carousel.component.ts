@@ -9,11 +9,5 @@ import { Component,CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';
 })
 export class CarouselComponent {
   @Input() images: string[] = [];
-  constructor() {
-    console.log('CarouselComponent initialized');
-  }
 
-  ngOnInit() {
-    console.log('Images array on init:', this.images);
-  }
 }

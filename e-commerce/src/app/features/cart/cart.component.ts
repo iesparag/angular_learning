@@ -7,10 +7,11 @@ import { selectAllCartItems } from './state/cart.selectors';
 import { CartCommonCardComponent } from "../../shared/components/cart-common-card/cart-common-card.component";
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { SaveForLaterComponent } from "../save-for-later/save-for-later.component";
 
 @Component({
   selector: 'app-cart',
-  imports: [CartCommonCardComponent,AsyncPipe,CommonModule,RouterLink],
+  imports: [CartCommonCardComponent, AsyncPipe, CommonModule, RouterLink, SaveForLaterComponent],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss',
 })

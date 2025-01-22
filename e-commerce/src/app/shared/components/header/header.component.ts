@@ -11,6 +11,8 @@ import {MatButtonModule} from '@angular/material/button';
 import { AuthState } from '../../../features/auth/state/auth.state';
 import { selectCartTotalQuantity } from '../../../features/cart/state/cart.selectors';
 import { getUserCart } from '../../../features/cart/state/cart.actions';
+import { getUserWishlistStart } from '../../../features/wishlist/state/wishlist.actions';
+import { selectWishlistTotalQuantity } from '../../../features/wishlist/state/wishlist.selectors';
 
 @Component({
   selector: 'app-header',
@@ -24,17 +26,20 @@ export class HeaderComponent implements OnInit {
   isAuthenticated$: Observable<boolean>;
   defaultAvatar = 'https://avatars.githubusercontent.com/u/103980322?v=4&size=64';
   cartItemCount: number  = 0
+  wishlistItemCount: number  = 0
 
   constructor(private store: Store) {
     // Subscribe to isAuthenticated selector
     this.user$ = this.store.select(selectUser);
     this.isAuthenticated$ = this.store.select(selectIsAuthenticated);
     this.store.select(selectCartTotalQuantity).subscribe((res)=> this.cartItemCount = res )
+    this.store.select(selectWishlistTotalQuantity).subscribe((res)=> this.wishlistItemCount = res )
     
   }
 
   ngOnInit(): void {
      this.store.dispatch(getUserCart())
+     this.store.dispatch(getUserWishlistStart())
   }
 
   onLogout(): void {

@@ -8,13 +8,8 @@ export interface saveForLaterProduct {
   videos: string[];
 }
 
-export interface SaveForLaterItem {
-  product: saveForLaterProduct;
-  quantity: number;
-}
-
 export interface SaveForLaterState {
-  saveForLaterItems: SaveForLaterItem[];
+  saveForLaterItems: saveForLaterProduct[];
   isLoading: boolean; 
   error: string | null; 
 }

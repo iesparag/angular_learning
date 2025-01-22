@@ -1,10 +1,9 @@
 import { Component, inject, Input } from '@angular/core';
 import { CartItem } from '../../../features/cart/state/cart.state';
 import { Store } from '@ngrx/store';
-import { deleteItemFromCartStart, updateProductQuantity } from '../../../features/cart/state/cart.actions';
+import { deleteItemFromCartStart, moveToSaveForLaterItemFromCartStart, moveToWishlistFromCartStart, updateProductQuantity } from '../../../features/cart/state/cart.actions';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { moveToSaveForLaterItemStart } from '../../../features/save-for-later/state/save-for-later.actions';
 
 @Component({
   selector: 'app-cart-common-card',
@@ -52,8 +51,14 @@ export class CartCommonCardComponent {
 
   }
 
-  SaveForLater(){
-    this.store.dispatch(moveToSaveForLaterItemStart({productId:this.cartItem.product.productId}))
+  moveToFavFromCart(){
+    this.store.dispatch(moveToWishlistFromCartStart({productId:this.cartItem.product.productId}))
+  }
+
+
+
+  moveToSaveForLater(){
+    this.store.dispatch(moveToSaveForLaterItemFromCartStart({productId:this.cartItem.product.productId}))
   }
   
 }

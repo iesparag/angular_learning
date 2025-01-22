@@ -103,7 +103,6 @@ export class ForgotPasswordComponent {
       this.otpForm.get('otp4')?.value
     ];
   
-    console.log(otpValues, "otpValues");
   
     // Avoid error message for a reset form
     if (otpValues.every(value => value === null || value === '')) {

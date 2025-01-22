@@ -57,8 +57,9 @@
 
   <!-- Action Buttons -->
   <div class="actions flex_bw">
-    <button class="favorite" (click)="toggleFavorite()">
-      <span [class.red]="isFavorite">❤️</span>
+    <button class="likeBtn" (click)="toggleFavorite()">
+      <mat-icon *ngIf="product.isFavorite" class="red">favorite</mat-icon>
+      <mat-icon *ngIf="!product.isFavorite">favorite_border</mat-icon>
     </button>
     <button (click)="addToCart()">Add to Cart</button>
     <!-- <button (click)="buyNow()">Buy Now</button> -->

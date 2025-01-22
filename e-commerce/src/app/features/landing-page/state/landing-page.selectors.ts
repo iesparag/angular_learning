@@ -8,7 +8,6 @@ const selectCategoryState = createFeatureSelector<CategoryState>('landingPage');
 export const selectCategories = createSelector(
   selectCategoryState,
   (state) => {
-    console.log('Categories State:', state);
     return state.categories;
   }
 );

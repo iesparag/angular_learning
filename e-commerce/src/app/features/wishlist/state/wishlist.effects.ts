@@ -33,6 +33,51 @@ export class WishlistEffects {
     );
   });
 
+  RemoveItemFromWishlist$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(WishListActions.removeItemFromWishlistStart),
+      mergeMap(({ productId }) => {
+        return this.wishlistService.removeItemFromWishlist(productId).pipe(
+          map((response) =>
+            WishListActions.removeItemFromWishlistSuccess({
+              wishListItem: response.data,
+            })
+          ),
+          catchError((error) =>
+            of(
+              WishListActions.removeItemFromWishlistFailure({
+                error: error.message,
+              })
+            )
+          )
+        );
+      })
+    );
+  });
+
+  AddItemToWishlist$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(WishListActions.addItemTotheWishlistStart),
+      mergeMap(({ productId }) => {
+        return this.wishlistService.addItemToTheWishlist(productId).pipe(
+          map((response) =>{
+            console.log('response: AddItemToWishlist', response);
+          return WishListActions.addItemTotheWishlistSuccess({
+              wishListItem: response.data,
+            })}
+          ),
+          catchError((error) =>
+            of(
+              WishListActions.addItemTotheWishlistFailure({
+                error: error.message,
+              })
+            )
+          )
+        );
+      })
+    );
+  });
+
   getUserWishlist$ = createEffect(() =>
     this.actions$.pipe(
       ofType(WishListActions.getUserWishlistStart),

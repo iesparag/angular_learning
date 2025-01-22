@@ -12,6 +12,7 @@ export interface Product {
   stockQuantity: number;
   isFeatured: boolean;
   priceAfterDiscount: number;
+  isFavorite?:Boolean
 }
 
 

@@ -43,13 +43,33 @@ export class CartService {
   }
 
 
-  // moveToSaveForLaterFromCart(
-  //   productId: string
-  // ): Observable<ApiResponse<CartItem>> {
-  //   return this.http.post<ApiResponse<CartItem>>(
-  //     `${this.apiUrl}/${Constants.buyer.CART}/${productId}/${Constants.buyer.CART_TO_SAVE_FOR_LATER}`,{}
-  //   );
-  // }
+  moveToSaveForLaterFromCart(
+    productId: string
+  ): Observable<ApiResponse<CartItem>> {
+    return this.http.patch<ApiResponse<CartItem>>(
+      `${this.apiUrl}/${Constants.buyer.CART}/${Constants.buyer.moveItemFromCartToSaveForLater}/${productId}`,{}
+    );
+  }
+
+  
+  moveToWishlistFromCart(
+    productId: string
+  ): Observable<ApiResponse<CartItem>> {
+    console.log('productId: ', productId);
+    const data =  this.http.post<ApiResponse<CartItem>>(
+      `${this.apiUrl}/${Constants.buyer.CART}/${productId}`,{}
+    );
+    console.log('data: ', data);
+    return data;
+  }
+
+  moveFromWishlistToCartService(
+    productId: string
+  ): Observable<ApiResponse<CartItem>> {
+    return this.http.post<ApiResponse<CartItem>>(
+      `${this.apiUrl}/${Constants.buyer.WISHLIST}/${Constants.buyer.CART_TO_CART}`,{productId}
+    );
+  }
 
   getUserCartService(): Observable<ApiResponse<CartItem[]>> {
     return this.http.get<ApiResponse<CartItem[]>>(

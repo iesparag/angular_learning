@@ -17,13 +17,15 @@ import {
 import { selectUser } from '../../../features/auth/state/auth.selectors';
 import { Observable, of } from 'rxjs';
 import { AuthState } from '../../../features/auth/state/auth.state';
+import { MatIconModule } from '@angular/material/icon';
+import {  addItemTotheWishlistStart, removeItemFromWishlistStart } from '../../../features/wishlist/state/wishlist.actions';
 
 // Install Swiper modules
 SwiperCore.use([Navigation, Pagination]);
 
 @Component({
   selector: 'app-product-common-card',
-  imports: [CommonModule],
+  imports: [CommonModule,MatIconModule],
   templateUrl: './product-common-card.component.html',
   styleUrls: ['./product-common-card.component.scss'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -32,11 +34,8 @@ export class ProductCommonCardComponent {
   @Input() product!: Product;
   store = inject(Store);
 
-
   quantity: number = 1;
-  isFavorite: boolean = false;
 
-  // Swiper configuration
   galleryConfig = {
     slidesPerView: 1,
     spaceBetween: 10,
@@ -44,45 +43,24 @@ export class ProductCommonCardComponent {
     pagination: { clickable: true },
   };
 
-  // // Increase Quantity
-  // increaseQuantity() {
-  //   this.quantity++;
-  //   this.store.dispatch(
-  //     updateProductQuantity({
-  //       productId: this.product._id,
-  //       quantity: this.quantity,
-  //     })
-  //   );
-  // }
 
-  // // Decrease Quantity
-  // decreaseQuantity() {
-  //   if (this.quantity > 1) {
-  //     this.quantity--;
-  //     this.store.dispatch(
-  //       updateProductQuantity({
-  //         productId: this.product._id,
-  //         quantity: this.quantity,
-  //       })
-  //     );
-  //   }
-  // }
 
   // Toggle Favorite
   toggleFavorite() {
-    this.isFavorite = !this.isFavorite;
+  if (this.product.isFavorite) {
+    // If true, dispatch action to remove the item from wishlist
+    this.store.dispatch(removeItemFromWishlistStart({ productId: this.product._id }));
+  } else {
+    // If false, dispatch action to add the item to wishlist
+    this.store.dispatch(addItemTotheWishlistStart({ productId: this.product._id }));
+  }
   }
 
   // Add to Cart
   addToCart() {
-    console.log('Added to Cart:', this.product, 'Quantity:', this.quantity);
     this.store.dispatch(
       addToCart({ productId: this.product._id, quantity: this.quantity })
     );
   }
 
-  // // Buy Now
-  // buyNow() {
-  //   console.log('Buy Now:', this.product, 'Quantity:', this.quantity);
-  // }
 }

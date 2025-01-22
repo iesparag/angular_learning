@@ -31,7 +31,6 @@ export class LandingPageComponent implements OnInit {
   ngOnInit(): void {
     this.onLoadCategories();
     this.categories$ = this.store.select(selectCategories);
-    console.log(' categories$:: ',  this.categories$);
     this.error$ = this.store.select(selectCategoryError);
   }
 

@@ -63,17 +63,52 @@ export const deleteItemFromCartFailure = createAction(
 );
 
 // ////////////////////////////////////////////////////////////////
-// export const moveToSaveForLaterItemStart = createAction(
-//   '[Cart] move to save for later from cart',
-//   props<{ productId: string}>()
-// );
+export const moveToSaveForLaterItemFromCartStart = createAction(
+  '[Cart] move to save for later from cart',
+  props<{ productId: string}>()
+);
 
-// export const moveToSaveForLaterItemSuccess = createAction(
-//   '[Cart] move to save for later from cart Success',
-//   props<{ cartItem: CartItem }>()
-// );
+export const moveToSaveForLaterItemFromCartSuccess = createAction(
+  '[Cart] move to save for later from cart Success',
+  props<{ cartItem: CartItem }>()
+);
 
-// export const moveToSaveForLaterItemFailure = createAction(
-//   '[Cart] move to save for later from cart Failure',
-//   props<{ error: string }>()
-// );
+export const moveToSaveForLaterItemFromCartFailure = createAction(
+  '[Cart] move to save for later from cart Failure',
+  props<{ error: string }>()
+);
+
+
+// ////////////////////////////////////////////////////////////////
+export const moveToWishlistFromCartStart = createAction(
+  '[Cart] move to wishlist from cart start',
+  props<{ productId: string}>()
+);
+
+export const moveToWishlistFromCartSuccess = createAction(
+  '[Cart] move to wishlist from cart Success',
+  props<{ cartItem: CartItem }>()
+);
+
+export const moveToWishlistFromCartFailure = createAction(
+  '[Cart] move to wishlist from cart Failure',
+  props<{ error: string }>()
+);
+
+
+
+////////////////////////////////////////////////////////////////
+export const moveFromWishlistToCartStart = createAction(
+  '[Cart] move From Wishlist To Cart start',
+  props<{ productId: string}>()
+);
+
+export const moveFromWishlistToCartSuccess = createAction(
+  '[Cart] move From Wishlist To Cart Success',
+  props<{ cartItem: CartItem }>()
+);
+
+export const moveFromWishlistToCartFailure = createAction(
+  '[Cart] move From Wishlist To Cart Failure',
+  props<{ error: string }>()
+);

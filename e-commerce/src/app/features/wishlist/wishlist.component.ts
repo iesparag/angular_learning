@@ -2,21 +2,40 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { wishlistProduct } from './state/wishlist.state';
-import { getUserWishlistStart } from './state/wishlist.actions';
+import { getUserWishlistStart, removeItemFromWishlistStart } from './state/wishlist.actions';
 import { selectAllWishlistItems } from './state/wishlist.selectors';
+import { MatTableModule } from '@angular/material/table';
+import { MatButtonModule } from '@angular/material/button';
+import { AsyncPipe, CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { moveFromWishlistToCartStart } from '../cart/state/cart.actions';
 
 @Component({
   selector: 'app-wishlist',
-  imports: [],
+  standalone: true, // Ensures standalone usage
+  imports: [CommonModule, MatButtonModule, MatTableModule, AsyncPipe,MatIconModule],
   templateUrl: './wishlist.component.html',
-  styleUrl: './wishlist.component.scss'
+  styleUrls: ['./wishlist.component.scss'], // Fixed `styleUrls`
 })
 export class WishlistComponent implements OnInit {
-  store = inject(Store)
-  wishlistList$:Observable<wishlistProduct[]> = of([])
+  // Columns displayed in the table
+  displayedColumns: string[] = ['images', 'name', 'description', 'price', 'actions'];
+  // Store and observable for the wishlist data
+  store = inject(Store);
+  wishlistList$: Observable<wishlistProduct[]> = of([]);
+
   ngOnInit(): void {
-   this.store.dispatch(getUserWishlistStart())
-   this.wishlistList$ = this.store.select(selectAllWishlistItems)
-   this.wishlistList$.subscribe((item)=> console.log(item,"wishlist"))
- }
+    this.store.dispatch(getUserWishlistStart());
+    this.wishlistList$ = this.store.select(selectAllWishlistItems);
+  }
+
+
+  moveToCart(product: wishlistProduct): void {
+    this.store.dispatch(moveFromWishlistToCartStart({productId:product.productId}))
+   
+  }
+
+  deleteFromWishlist(product: wishlistProduct): void {
+    this.store.dispatch(removeItemFromWishlistStart({productId:product.productId}))
+  }
 }

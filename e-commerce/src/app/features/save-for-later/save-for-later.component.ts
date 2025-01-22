@@ -2,7 +2,8 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { selectAllSaveForLaterItems } from './state/save-for-later.selectors';
 import { Observable, of } from 'rxjs';
-import { SaveForLaterItem } from './state/save-for-later.state';
+import { saveForLaterProduct } from './state/save-for-later.state';
+import { getUserSaveForLaterStart } from './state/save-for-later.actions';
 
 @Component({
   selector: 'app-save-for-later',
@@ -11,14 +12,13 @@ import { SaveForLaterItem } from './state/save-for-later.state';
   styleUrl: './save-for-later.component.scss'
 })
 export class SaveForLaterComponent implements OnInit {
-  SaveForLaterList$: Observable<SaveForLaterItem[]> = of([])
+  SaveForLaterList$: Observable<saveForLaterProduct[]> = of([])
   store= inject(Store)
   ngOnInit(): void {
+    this.store.dispatch(getUserSaveForLaterStart())
     this.store.select(selectAllSaveForLaterItems).subscribe((item)=>{
-      console.log('item: save for Later ', item);
-
+console.log(item,"88888888888888888888888888888888888888888888888")
     })
-    console.log('this.store.select(selectAllSaveForLaterItems): ', this.store.select(selectAllSaveForLaterItems));
   }
 
 }

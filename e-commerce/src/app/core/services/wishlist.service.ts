@@ -23,6 +23,22 @@ export class WishlistService {
      );
    }
 
+   removeItemFromWishlist(
+     productId: string
+   ): Observable<ApiResponse<wishlistProduct>> {
+     return this.http.delete<ApiResponse<wishlistProduct>>(
+       `${this.apiUrl}/${Constants.buyer.WISHLIST}/${productId}`,{}
+     );
+   }
+
+   addItemToTheWishlist(
+     productId: string
+   ): Observable<ApiResponse<wishlistProduct>> {
+     return this.http.post<ApiResponse<wishlistProduct>>(
+       `${this.apiUrl}/${Constants.buyer.WISHLIST}`,{productId}
+     );
+   }
+
 
     getUserWishlistService(): Observable<ApiResponse<wishlistProduct[]>> {
        const data =  this.http.get<ApiResponse<wishlistProduct[]>>(
