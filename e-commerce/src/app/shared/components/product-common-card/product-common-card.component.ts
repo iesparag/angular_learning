@@ -19,6 +19,7 @@ import { Observable, of } from 'rxjs';
 import { AuthState } from '../../../features/auth/state/auth.state';
 import { MatIconModule } from '@angular/material/icon';
 import {  addItemTotheWishlistStart, removeItemFromWishlistStart } from '../../../features/wishlist/state/wishlist.actions';
+import { Router } from '@angular/router';
 
 // Install Swiper modules
 SwiperCore.use([Navigation, Pagination]);
@@ -32,6 +33,7 @@ SwiperCore.use([Navigation, Pagination]);
 })
 export class ProductCommonCardComponent {
   @Input() product!: Product;
+  router = inject(Router)
   store = inject(Store);
 
   quantity: number = 1;
@@ -61,6 +63,11 @@ export class ProductCommonCardComponent {
     this.store.dispatch(
       addToCart({ productId: this.product._id, quantity: this.quantity })
     );
+  }
+
+
+  goToProductDetail(){
+    this.router.navigate(['/products', this.product._id]);
   }
 
 }

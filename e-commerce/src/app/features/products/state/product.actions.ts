@@ -10,3 +10,17 @@ export const loadProductsFailure = createAction(
   '[Product] Load Products Failure',
   props<{ error: string }>()
 );
+
+
+
+
+
+export const fetchOneProductByIdStart = createAction('[Product] Product fetch By Id start',props<{ productId: string | null }>());
+export const fetchOneProductByIdStartSuccess = createAction(
+  '[Product] Product fetch By Id Success',
+  props<{ product: Product }>()
+);
+export const fetchOneProductByIdStartFailure = createAction(
+  '[Product] Product fetch By Id Failure',
+  props<{ error: string }>()
+);

@@ -2,6 +2,7 @@
 import { createAction, props } from '@ngrx/store';
 import {saveForLaterProduct } from './save-for-later.state';
 import { ApiResponse } from '../../../core/types/response.interface';
+import { CartItem } from '../../cart/state/cart.state';
 
 
 
@@ -32,33 +33,33 @@ export const addItemToTheSaveForLaterFailure = createAction(
 );
 
 
-// export const deleteItemFromCartStart = createAction(
-//   '[Cart] delete item from cart',
-//   props<{ productId: string}>()
-// );
+export const deleteItemFromSaveForLaterStart = createAction(
+  '[saveForLater] delete item from Save For Later',
+  props<{ productId: string}>()
+);
 
-// export const deleteItemFromCartSuccess = createAction(
-//   '[Cart] delete item from cart Success',
-//   props<{ cartItem: SaveForLaterItem }>()
-// );
+export const deleteItemFromSaveForLaterSuccess = createAction(
+  '[saveForLater] delete item from Save For Later Success',
+  props<{ saveForLaterItem: saveForLaterProduct }>()
+);
 
-// export const deleteItemFromCartFailure = createAction(
-//   '[Cart] delete item from cart Failure',
-//   props<{ error: string }>()
-// );
+export const deleteItemFromSaveForLaterFailure = createAction(
+  '[saveForLater] delete item from Save For Later Failure',
+  props<{ error: string }>()
+);
 
-// ////////////////////////////////////////////////////////////////
-// export const moveToSaveForLaterItemStart = createAction(
-//   '[Cart] move to save for later from cart',
-//   props<{ productId: string}>()
-// );
+////////////////////////////////////////////////////////////////
+export const moveToCartFromSaveForLaterStart = createAction(
+  '[saveForLater] move from save for later to cart',
+  props<{ productId: string}>()
+);
 
-// export const moveToSaveForLaterItemSuccess = createAction(
-//   '[Cart] move to save for later from cart Success',
-//   props<{ cartItem: SaveForLaterItem }>()
-// );
+export const moveToCartFromSaveForLaterSuccess = createAction(
+  '[saveForLater] move from save for later to cart Success',
+  props<{ saveForLaterItem: CartItem }>()
+);
 
-// export const moveToSaveForLaterItemFailure = createAction(
-//   '[Cart] move to save for later from cart Failure',
-//   props<{ error: string }>()
-// );
+export const moveToCartFromSaveForLaterFailure = createAction(
+  '[saveForLater] move from save for later to cart Failure',
+  props<{ error: string }>()
+);

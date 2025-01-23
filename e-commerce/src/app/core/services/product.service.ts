@@ -22,4 +22,8 @@ export class ProductService {
     }
     return this.http.get<ApiResponse<Product[]>>(`${this.apiUrl}/${Constants.buyer.PRODUCTS}`, { params });
   }
+
+  getOneProduct(productId: string | null): Observable<ApiResponse<Product>> {
+    return this.http.get<ApiResponse<Product>>(`${this.apiUrl}/${Constants.buyer.PRODUCTS}/${productId}`);
+  }
 }

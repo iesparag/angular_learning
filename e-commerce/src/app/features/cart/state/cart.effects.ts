@@ -126,7 +126,7 @@ export class CartEffects {
           // Dispatch remove item from wishlist action after success
           tap((action) => {
             // Dispatch remove from wishlist action using store.dispatch
-            this.store.dispatch(SaveForLaterActions.addItemToTheSaveForLaterSuccess({ saveForLaterItem : action.cartItem.product }));
+          return  this.store.dispatch(SaveForLaterActions.addItemToTheSaveForLaterSuccess({ saveForLaterItem : action.cartItem.product }));
           }),
           catchError((error) =>
             of(CartActions.moveToWishlistFromCartFailure({ error: error.message }))

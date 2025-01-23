@@ -9,11 +9,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { moveFromWishlistToCartStart } from '../cart/state/cart.actions';
+import { EmptyStateComponent } from "../../shared/components/empty-state/empty-state.component";
 
 @Component({
   selector: 'app-wishlist',
   standalone: true, // Ensures standalone usage
-  imports: [CommonModule, MatButtonModule, MatTableModule, AsyncPipe,MatIconModule],
+  imports: [CommonModule, MatButtonModule, MatTableModule, AsyncPipe, MatIconModule, EmptyStateComponent],
   templateUrl: './wishlist.component.html',
   styleUrls: ['./wishlist.component.scss'], // Fixed `styleUrls`
 })

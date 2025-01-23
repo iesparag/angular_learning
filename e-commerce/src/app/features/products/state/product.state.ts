@@ -21,10 +21,12 @@ export interface ProductState {
   products: Product[];
   loading: boolean;
   error: string | null;
+  selectedProduct: Product | null;
 }
 
 export const initialState: ProductState = {
   products: [],
   loading: false,
   error: null,
+  selectedProduct: null,
 };

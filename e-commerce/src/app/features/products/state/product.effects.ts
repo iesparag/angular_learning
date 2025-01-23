@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import {  ofType, createEffect, Actions } from '@ngrx/effects';
 import { of } from 'rxjs';
+import * as productActions from "./product.actions";
 import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
 import { loadProducts, loadProductsSuccess, loadProductsFailure } from './product.actions';
 import { ProductService } from '../../../core/services/product.service';
@@ -29,5 +30,23 @@ export class ProductEffects {
       )
     );
   });
+
+
+
+  LoadOneProduct$ = createEffect(() =>{
+    return this.actions$.pipe(
+      ofType(productActions.fetchOneProductByIdStart),
+      mergeMap(({productId}) =>{
+      return  this.productService.getOneProduct(productId).pipe(
+          map((response) =>
+            productActions.fetchOneProductByIdStartSuccess({ product : response.data  })
+          ),
+          catchError((error) =>
+            of(productActions.fetchOneProductByIdStartFailure({ error: error.message }))
+          )
+        )}
+      )
+    )}
+  )
 
 }
