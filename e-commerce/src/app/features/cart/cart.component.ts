@@ -9,6 +9,7 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { SaveForLaterComponent } from '../save-for-later/save-for-later.component';
 import { EmptyStateComponent } from "../../shared/components/empty-state/empty-state.component";
+import { GooglePlacesService } from '../../core/services/google-places.service';
 // import { PaymentComponent } from "../payment/payment.component";
 
 @Component({
@@ -26,10 +27,13 @@ import { EmptyStateComponent } from "../../shared/components/empty-state/empty-s
     styleUrl: './cart.component.scss',
 })
 export class CartComponent implements OnInit {
+    address: string = '';
     userCartList$: Observable<CartItem[]> = of([]);
     totalAmount: number = 0;
     store = inject(Store);
+    constructor(private googlePlacesService: GooglePlacesService) {}
     ngOnInit(): void {
+        this.initializeAddressAutocomplete();
         this.getUserCart();
         this.userCartList$ = this.store.select(selectAllCartItems);
         this.userCartList$.subscribe((cartItems) => {
@@ -46,4 +50,23 @@ export class CartComponent implements OnInit {
             return sum + item.product.price * item.quantity;
         }, 0); // Start sum at 0
     }
+
+ initializeAddressAutocomplete() {
+    const inputElement = document.getElementById(
+      'addressInput'
+    ) as HTMLInputElement;
+
+    if (inputElement) {
+      this.googlePlacesService.initializeAutocomplete(inputElement);
+    } else {
+      console.error('Address input element not found');
+    }
+  }
+
+  onAddressChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.address = input.value;
+    console.log('Selected Address:', this.address);
+  }
+
 }

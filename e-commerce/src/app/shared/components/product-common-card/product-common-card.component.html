@@ -1,4 +1,4 @@
-<div  class="product-card" (click)="goToProductDetail()">
+<div  class="product-card">
   <!-- Product Gallery -->
   <div class="product-gallery">
     <swiper-container
@@ -43,6 +43,7 @@
         ({{ product.discount }}% OFF)
       </span>
     </div>
+    <p  (click)="goToProductDetail()">View Details</p>
   </div>
 
   <!-- Quantity Control -->

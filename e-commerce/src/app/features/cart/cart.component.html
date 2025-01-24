@@ -42,7 +42,17 @@
             <!-- Right Section: Payment -->
             <div class="cart-payment">
                 <h1>Payment will be here</h1>
-                <!-- <app-payment></app-payment> -->
+            </div>
+            <div class="cart-payment">
+                <div>
+                    <label for="addressInput">Enter your address:</label>
+                    <input
+                        id="addressInput"
+                        type="text"
+                        (input)="onAddressChange($event)"
+                    />
+                    <p>Selected Address: {{ address }}</p>
+                </div>
             </div>
         </div>
 
