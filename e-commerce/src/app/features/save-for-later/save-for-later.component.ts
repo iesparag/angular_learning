@@ -26,7 +26,6 @@ export class SaveForLaterComponent implements OnInit {
     }
 
     deleteFromSaveForLate(element:saveForLaterProduct){
-        debugger
           this.store.dispatch(deleteItemFromSaveForLaterStart({productId:element.productId}))
     }
 

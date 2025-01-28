@@ -1,10 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as AuthActions from './auth.actions';
-import { catchError, map, of, switchMap, tap } from 'rxjs';
+import { catchError, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { AuthService } from '../../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { ToastService } from '../../../core/services/toast.service';
+import { AddressPayload } from './auth.state';
 
 @Injectable()
 export class AuthEffects {
@@ -42,6 +43,41 @@ export class AuthEffects {
       )
     )
   );
+
+
+addAddress$ = createEffect(() =>
+  this.actions$.pipe(
+    ofType(AuthActions.addAddressStart), // Listening for the correct action
+    mergeMap(({ addresses }: { addresses: AddressPayload }) =>
+      this.authService.saveUserAddressInService(addresses).pipe(
+        map((response) => 
+          AuthActions.addAddressSuccess({ addresses: response.data })
+        ),
+        catchError((error) =>
+          of(AuthActions.addAddressFailure({ error: error.message }))
+        )
+      )
+    )
+  )
+);
+
+fetchUserAddress$ = createEffect(() =>
+  this.actions$.pipe(
+    ofType(AuthActions.fetchAddressesStart),
+    mergeMap(() =>
+      this.authService.fetchUserAllAddressInService().pipe(
+        map((response) => 
+          AuthActions.fetchAddressesSuccess({ addresses: response.data })
+        ),
+        catchError((error) =>
+          of(AuthActions.fetchAddressesFailure({ error: error.message }))
+        )
+      )
+    )
+  )
+);
+
+
 
   redirectAfterLogin$ = createEffect(
     () =>

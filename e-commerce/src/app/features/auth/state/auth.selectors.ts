@@ -31,3 +31,13 @@ export const selectRefreshToken = createSelector(
   selectAuthState,
   (state: AuthState) => state.refreshToken
 );
+
+export const selectUserAddresses = createSelector(
+  selectUser,
+  (user) => user?.addresses || []
+);
+
+export const selectUserAddressError = createSelector(
+  selectAuthState,
+  (state: AuthState) => state.error
+);

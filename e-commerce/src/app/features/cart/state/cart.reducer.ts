@@ -37,8 +37,6 @@ export const cartReducer = createReducer(
 
   // Add to cart: success
   on(CartActions.addToCartSuccess, (state, { cartItem }) => {
-    console.log('cartItem: ', cartItem);
-    debugger
     const existingItemIndex = state.items.findIndex(
       (item) => item.product.productId === cartItem.product.productId
     );

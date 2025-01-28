@@ -39,9 +39,6 @@ export class GooglePlacesService {
 
   // Method to initialize Google Places Autocomplete
   initializeAutocomplete(inputElement: HTMLInputElement): any {
-    console.log('Autocomplete initialized');
-
-    // Initialize Google Places Autocomplete
     const autocomplete = new window.google.maps.places.Autocomplete(inputElement, {
       types: ['geocode'],
       componentRestrictions: { country: 'in' },
@@ -50,7 +47,6 @@ export class GooglePlacesService {
     // Listen to the 'place_changed' event
     autocomplete.addListener('place_changed', () => {
       const place = autocomplete.getPlace() as PlaceResult;
-
       if (place) {
         // Update the formatted address and address components
         this.formattedAddress = place.formatted_address || '';

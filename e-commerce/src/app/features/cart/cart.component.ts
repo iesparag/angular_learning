@@ -1,10 +1,16 @@
-// cart.component.ts
-
-import { AfterViewInit, Component, inject, OnInit } from '@angular/core';
+import {
+    AfterViewChecked,
+    AfterViewInit,
+    Component,
+    ElementRef,
+    inject,
+    OnInit,
+    ViewChild,
+} from '@angular/core';
 import { CartItem } from './state/cart.state';
 import { Store } from '@ngrx/store';
 import { getUserCart } from './state/cart.actions';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { selectAllCartItems } from './state/cart.selectors';
 import { CartCommonCardComponent } from '../../shared/components/cart-common-card/cart-common-card.component';
 import { AsyncPipe, CommonModule } from '@angular/common';
@@ -13,7 +19,12 @@ import { SaveForLaterComponent } from '../save-for-later/save-for-later.componen
 import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
 import { GooglePlacesService } from '../../core/services/google-places.service';
 import { FormsModule } from '@angular/forms';
-import { saveUserAddressActionStart } from '../auth/state/auth.actions';
+import {
+    addAddressStart,
+    fetchAddressesStart,
+} from '../auth/state/auth.actions';
+import { AddressResponse } from '../auth/state/auth.state';
+import { selectUserAddresses } from '../auth/state/auth.selectors';
 
 @Component({
     selector: 'app-cart',
@@ -29,7 +40,12 @@ import { saveUserAddressActionStart } from '../auth/state/auth.actions';
     templateUrl: './cart.component.html',
     styleUrls: ['./cart.component.scss'],
 })
-export class CartComponent implements OnInit, AfterViewInit {
+export class CartComponent implements OnInit {
+    showAddressList: boolean = true;
+    store = inject(Store);
+    addressessList$: Observable<AddressResponse[]> =
+        this.store.select(selectUserAddresses);
+    selectedAddressId: string | null = null;
     formattedAddress: string = '';
     addressComponents: Array<any> = [];
     address: string = '';
@@ -47,238 +63,210 @@ export class CartComponent implements OnInit, AfterViewInit {
     isAddressSaved: boolean = false;
     isError: boolean = false;
     errorMessage: string = '';
-    userCartList$: Observable<CartItem[]> = of([]);
+    userCartList$: Observable<CartItem[]> =
+        this.store.select(selectAllCartItems);
     totalAmount: number = 0;
-    store = inject(Store);
 
     constructor(private googlePlacesService: GooglePlacesService) {}
 
     ngOnInit(): void {
-        this.formattedAddress = this.googlePlacesService.getFormattedAddress();
-        this.addressComponents =
-            this.googlePlacesService.getAddressComponents();
-        this.getUserCart();
-        this.userCartList$ = this.store.select(selectAllCartItems);
+        // this.initializeAddressAutocomplete();
+        this.loadAddresses();
+        this.loadCartItems();
+        this.monitorSelectedAddress();
+    }
+
+//  ngAfterViewInit(): void {
+//      this.initializeAddressAutocomplete();
+// }
+
+    private loadAddresses(): void {
+        this.store.dispatch(fetchAddressesStart());
+        this.addressessList$.subscribe((addresses) => {
+            const defaultAddress = addresses.find(
+                (address) => address.isDefault
+            );
+            if (defaultAddress) {
+                this.selectedAddressId = defaultAddress._id;
+            }
+        });
+       
+    }
+
+    private loadCartItems(): void {
+        this.store.dispatch(getUserCart());
         this.userCartList$.subscribe((cartItems) => {
             this.totalAmount = this.calculateTotalAmount(cartItems);
         });
+    }
 
+    private monitorSelectedAddress(): void {
         this.googlePlacesService
             .getAddressObservable()
             .subscribe((selectedAddress) => {
                 this.address = selectedAddress;
                 console.log('Address selected:', this.address);
-
                 this.addressComponents =
                     this.googlePlacesService.getAddressComponents();
                 this.processAddressComponents();
             });
+             this.formattedAddress = this.googlePlacesService.getFormattedAddress();
+        this.addressComponents =
+            this.googlePlacesService.getAddressComponents();
     }
 
-    ngAfterViewInit(): void {
-        this.initializeAddressAutocomplete();
+    private calculateTotalAmount(cartItems: CartItem[]): number {
+        return cartItems.reduce(
+            (sum, item) => sum + item.product.price * item.quantity,
+            0
+        );
     }
 
-    getUserCart() {
-        this.store.dispatch(getUserCart());
+    onAddressSelect(address: AddressResponse): void {
+        this.selectedAddressId = address._id;
     }
 
-    calculateTotalAmount(cartItems: CartItem[]): number {
-        return cartItems.reduce((sum, item) => {
-            return sum + item.product.price * item.quantity;
-        }, 0);
+    addNewAddress(): void {
+        this.showAddressList = false;
+        this.resetAddressDetails();
+        this.selectedAddressId = null;
     }
 
-    initializeAddressAutocomplete() {
-        const inputElement = document.getElementById(
-            'addressInput'
-        ) as HTMLInputElement;
-
-        if (inputElement) {
-            this.googlePlacesService.initializeAutocomplete(inputElement);
-        } else {
-            console.error('Address input element not found');
-        }
+    cancelAddNewAddress() {
+        this.showAddressList = true;
     }
 
-    onAddressChange(event: Event) {
+    private resetAddressDetails(): void {
+        this.addressDetails = {
+            floor: '',
+            building: '',
+            street: '',
+            locality: '',
+            city: '',
+            state: '',
+            country: '',
+            zip: '',
+            isDefault: false,
+        };
+    }
+
+    onAddressChange(event: Event): void {
         const input = event.target as HTMLInputElement;
         this.address = input.value;
-        this.isAddressSaved = false; // Reset save status if a new address is entered
+        this.googlePlacesService.initializeAutocomplete(input);
+        this.isAddressSaved = false;
         console.log('Selected Address:', this.address);
     }
 
-    processAddressComponents(): void {
+    private processAddressComponents(): void {
         const components = this.addressComponents;
+        this.addressDetails = {
+            floor: this.extractAddressComponent(components, 'street_number'),
+            building: this.extractAddressComponent(components, 'premise'),
+            street: this.extractAddressComponent(components, 'route') ,
+            locality: this.extractAddressComponent(components, 'locality') || this.extractAddressComponent(components, 'sublocality') || this.extractAddressComponent(components, "sublocality_level_1"),
+            city: this.extractAddressComponent(
+                components,
+                'administrative_area_level_3'
+            ),
+            state: this.extractAddressComponent(
+                components,
+                'administrative_area_level_1'
+            ),
+            country: this.extractAddressComponent(components, 'country'),
+            zip: this.extractAddressComponent(components, 'postal_code'),
+            isDefault: false,
+        };
+    }
 
-        this.addressDetails.floor =
-            components.find((component) =>
-                component.types.includes('street_number')
-            )?.long_name || '';
-        this.addressDetails.building =
-            components.find((component) => component.types.includes('premise'))
-                ?.long_name || '';
-        this.addressDetails.street =
-            components.find((component) => component.types.includes('route'))
-                ?.long_name || '';
-        this.addressDetails.locality =
-            components.find((component) => component.types.includes('locality'))
-                ?.long_name || '';
-        this.addressDetails.city =
-            components.find((component) =>
-                component.types.includes('administrative_area_level_3')
-            )?.long_name || '';
-        this.addressDetails.state =
-            components.find((component) =>
-                component.types.includes('administrative_area_level_1')
-            )?.long_name || '';
-        this.addressDetails.country =
-            components.find((component) => component.types.includes('country'))
-                ?.long_name || '';
-        this.addressDetails.zip =
-            components.find((component) =>
-                component.types.includes('postal_code')
-            )?.long_name || '';
+    private extractAddressComponent(components: any[], type: string): string {
+        const component = components.find((c) => c.types.includes(type));
+        return component ? component.long_name : '';
     }
 
     validateAddressFields(): boolean {
         this.isError = false;
         this.errorMessage = '';
-
-        // Check for missing fields and add errors for each required field
-        const missingFields = [];
-
-        if (!this.addressDetails.floor) missingFields.push('floor');
-        if (!this.addressDetails.building) missingFields.push('building');
-        if (!this.addressDetails.street) missingFields.push('street');
-        if (!this.addressDetails.locality) missingFields.push('locality');
-        if (!this.addressDetails.city) missingFields.push('city');
-        if (!this.addressDetails.state) missingFields.push('state');
-        if (!this.addressDetails.country) missingFields.push('country');
-        if (!this.addressDetails.zip) missingFields.push('zip');
-
+        const missingFields = Object.keys(this.addressDetails).filter(
+            (key) =>
+               key !== 'isDefault' && !this.addressDetails[key as keyof typeof this.addressDetails]
+        );
         if (missingFields.length > 0) {
             this.isError = true;
-            console.log('this.isError: ', this.isError);
-            console.log('this.errorMessage: ', this.errorMessage);
             this.errorMessage = `Please fill in all required fields: ${missingFields.join(
                 ', '
             )}`;
             return false;
         }
-        console.log('this.isError: ', this.isError);
-        console.log('this.errorMessage: ', this.errorMessage);
-
         return true;
     }
 
-    saveAddressDetails() {
+    saveAddressDetails(): void {
         if (this.validateAddressFields()) {
-            debugger;
-            // Prepare the complete address data
             const completeAddress = {
                 mainAddress: this.address,
                 ...this.addressDetails,
             };
-
-            console.log('Saving Address:', completeAddress);
-
-            // this.store.dispatch(saveUserAddressActionStart({ address: completeAddress }));
-            // debugger;
-            this.isAddressSaved = true;
-
-            // Clear input fields
-            this.addressDetails = {
-                floor: '',
-                building: '',
-                street: '',
-                locality: '',
-                city: '',
-                state: '',
-                country: '',
-                zip: '',
-                isDefault: false,
-            };
+            this.store.dispatch(
+                addAddressStart({ addresses: completeAddress })
+            )
+            this.showAddressList = true;
+            this.resetAddressDetails();
         } else {
             console.error('Please complete all address fields before saving');
-            debugger;
         }
     }
 
-    useMyLocation() {
+    useMyLocation(): void {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
-                    const latitude = position.coords.latitude;
-                    const longitude = position.coords.longitude;
+                    const { latitude, longitude } = position.coords;
                     this.reverseGeocode(latitude, longitude);
                 },
-                (error) => {
-                    console.error('Error getting geolocation:', error);
-                }
+                (error) => console.error('Error getting geolocation:', error)
             );
         } else {
             console.log('Geolocation is not supported by this browser.');
         }
     }
 
-    reverseGeocode(lat: number, lng: number) {
+    reverseGeocode(lat: number, lng: number): void {
         const geocoder = new window.google.maps.Geocoder();
         const latLng = new window.google.maps.LatLng(lat, lng);
-
         geocoder.geocode({ location: latLng }, (results: any, status: any) => {
             if (status === 'OK' && results[0]) {
-                console.log('results:1234 ', results);
                 const address = results[0].formatted_address;
                 this.address = address;
-
                 const components = results[0].address_components;
-                this.addressDetails.floor = this.getAddressComponent(
-                    components,
-                    'floor'
-                );
-                this.addressDetails.building = this.getAddressComponent(
-                    components,
-                    'building'
-                );
-                this.addressDetails.street = this.getAddressComponent(
-                    components,
-                    'route'
-                );
-                this.addressDetails.locality = this.getAddressComponent(
-                    components,
-                    'locality'
-                );
-                this.addressDetails.city = this.getAddressComponent(
-                    components,
-                    'locality'
-                );
-                this.addressDetails.state = this.getAddressComponent(
-                    components,
-                    'administrative_area_level_1'
-                );
-                this.addressDetails.country = this.getAddressComponent(
-                    components,
-                    'country'
-                );
-                this.addressDetails.zip = this.getAddressComponent(
-                    components,
-                    'postal_code'
-                );
+                this.processAddressComponentsFromGeocode(components);
             } else {
                 console.error('Geocoder failed due to: ' + status);
             }
         });
     }
 
-    getAddressComponent(components: any[], type: string): string {
-        for (let i = 0; i < components.length; i++) {
-            for (let j = 0; j < components[i].types.length; j++) {
-                if (components[i].types[j] === type) {
-                    return components[i].long_name;
-                }
-            }
-        }
-        return '';
+    private processAddressComponentsFromGeocode(components: any[]): void {
+        this.addressDetails = {
+            floor: this.extractAddressComponent(components, 'floor'),
+            building: this.extractAddressComponent(components, 'building'),
+            street: this.extractAddressComponent(components, 'route'),
+            locality: this.extractAddressComponent(components, 'locality'),
+            city: this.extractAddressComponent(components, 'locality'),
+            state: this.extractAddressComponent(
+                components,
+                'administrative_area_level_1'
+            ),
+            country: this.extractAddressComponent(components, 'country'),
+            zip: this.extractAddressComponent(components, 'postal_code'),
+            isDefault: false,
+        };
+    }
+
+
+
+    checkout(){
+        console.log("payment option");
+        
     }
 }

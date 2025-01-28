@@ -116,7 +116,19 @@ export class AuthService {
   }
 
     // Login method
-  saveUserAddressInService(address: AddressPayload): Observable<ApiResponse<AddressResponse[]>> {
-    return this.http.post<ApiResponse<AddressResponse[]>>(`${this.apiUrl}/${Constants.users.USER_SAVE_ADDRESS}`, address)
+  saveUserAddressInService(
+    address: AddressPayload
+  ): Observable<ApiResponse<AddressResponse>> {
+    return this.http.post<ApiResponse<AddressResponse>>(
+      `${this.apiUrl}/user-address/add`,
+      address
+    );
+  }
+
+
+  fetchUserAllAddressInService(): Observable<ApiResponse<AddressResponse[]>> {
+    return this.http.get<ApiResponse<AddressResponse[]>>(
+      `${this.apiUrl}/user-address`,
+    );
   }
 }

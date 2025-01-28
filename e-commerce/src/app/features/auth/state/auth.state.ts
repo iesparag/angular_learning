@@ -8,6 +8,7 @@
       role: string;
       wishlist: any[];
       cart: any[];
+      addresses: AddressResponse[];
     } | null;
     accessToken: string | null;
     refreshToken: string | null;
@@ -39,7 +40,7 @@
     state: string;
     country: string;
     zip: string;
-    isDefault: boolean;
+    isDefault?: boolean;
     createdAt: string;
     updatedAt: string;
     __v: number;
@@ -55,5 +56,5 @@ export interface AddressPayload {
     state: string;
     country: string;
     zip: string;
-    isDefault: boolean;
+    isDefault?: boolean;
 }

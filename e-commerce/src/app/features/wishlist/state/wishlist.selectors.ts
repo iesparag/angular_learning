@@ -3,7 +3,6 @@ import { WishlistState } from './wishlist.state';
 
 // Select the entire cart state
 export const selectWishlistState = createFeatureSelector<WishlistState>('wishlist');
-console.log('selectWishlistState:12334 ', selectWishlistState);
 
 // Select all cart items
 export const selectAllWishlistItems = createSelector(

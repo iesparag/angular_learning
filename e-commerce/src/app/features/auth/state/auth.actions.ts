@@ -18,6 +18,7 @@ export const loginSuccess = createAction(
       role: string;
       wishlist: any[];
       cart: any[];
+      addresses: AddressResponse[];
     };
     accessToken: string;
     refreshToken: string;
@@ -39,14 +40,13 @@ export const logoutFailure = createAction(
   props<{ error: any }>()
 );
 
-export const saveUserAddressActionStart = createAction('[Auth] Save user address start',props<{address:AddressPayload}>()); // Logout initiation
-export const saveUserAddressActionSuccess = createAction(
-  '[Auth] Save user address success',
-  // props:<{addrress:}>()
-); // On successful logout
-export const saveUserAddressActionFailure = createAction(
-  '[Auth] Save user address failure',
-  props<{ error: any }>()
-);
+// Add Address
+export const addAddressStart = createAction('[Auth] Add Address Start', props<{ addresses: AddressPayload }>());
+export const addAddressSuccess = createAction('[Auth] Add Address Success', props<{ addresses: AddressResponse }>());
+export const addAddressFailure = createAction('[Auth] Add Address Failure', props<{ error: string }>());
 
+// Fetch Addresses
+export const fetchAddressesStart = createAction('[Auth] Fetch Addresses Start');
+export const fetchAddressesSuccess = createAction('[Auth] Fetch Addresses Success', props<{ addresses: AddressResponse[] }>());
+export const fetchAddressesFailure = createAction('[Auth] Fetch Addresses Failure', props<{ error: string }>());
 

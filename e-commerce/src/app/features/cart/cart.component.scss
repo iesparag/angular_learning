@@ -1,4 +1,18 @@
 .cart-page {
+    .address-container {
+        max-height: 500px;
+        height: 100%;
+        overflow-y: auto;
+        button {
+            position: sticky;
+            bottom: 0;
+        }
+        scrollbar-width: none;
+        -ms-overflow-style: 1px;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
     .cart-section {
         display: flex;
         padding: 20px;
@@ -21,11 +35,58 @@
             padding-right: 30px;
             color: #000;
             font-size: 24px;
+            .checkout-btn {
+                padding: 0.5rem 2rem;
+                border-radius: 50px;
+                background-color: gold;
+                color: black;
+                font-weight: 700;
+                width: 250px;
+                height: 50px;
+                font-size: large;
+                border: none;
+                cursor: pointer;
+                text-align: center;
+                display: inline-block;
+                transition: background-color 0.3s ease, transform 0.2s ease;
+            }
         }
     }
     .cart-payment {
         padding: 1rem;
         width: 30%;
+
+        .address-option {
+            margin-bottom: 20px; /* Space between each address */
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            ::ng-deep {
+                label {
+                    display: flex;
+                    align-items: baseline;
+                }
+            }
+        }
+
+        .address-details {
+            margin-top: 10px;
+        }
+
+        .address-line {
+            margin-bottom: 8px; /* Space between each field */
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px; /* Space between radio button and address */
+        }
+
+        strong {
+            font-weight: bold;
+        }
 
         #addressInput {
             width: 80%;
@@ -49,17 +110,40 @@
                 margin-bottom: 0.5rem;
                 padding: 0.5rem;
             }
+            .checkbox-div {
+                display: flex;
+                gap: 5px;
+                align-items: baseline;
+                margin-top: 10px;
+                input {
+                    display: flex;
+                    align-items: baseline;
+                    width: fit-content;
+                }
+            }
 
-            button {
-                padding: 0.5rem 1rem;
-                background-color: #28a745;
-                color: white;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
+            .button-div {
+                display: flex;
+                gap: 10px;
+                .save-address-button {
+                    cursor: pointer;
+                    background-color: #28a745;
+                    border-radius: 5px;
+                    padding: 0.5rem 1rem;
+                    &:hover {
+                        background-color: #218838;
+                    }
+                }
+                .cancel-address-button {
+                    background-color: red;
+                    cursor: pointer;
 
-                &:hover {
-                    background-color: #218838;
+                    padding: 0.5rem 1rem;
+                    border-radius: 5px;
+                    color: white;
+                    &:hover {
+                        background-color: red;
+                    }
                 }
             }
         }

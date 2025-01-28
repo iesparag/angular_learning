@@ -44,7 +44,6 @@ export const saveForLaterReducer = createReducer(
             const itemExists = state.saveForLaterItems.some(
                 (item) => item.productId === saveForLaterItem.productId
             );
-            debugger;
             const updatedItems = itemExists
                 ? state.saveForLaterItems
                 : [...state.saveForLaterItems, saveForLaterItem];
