@@ -6,7 +6,7 @@ import { environment } from '../../../environments/environment';
 import { Constants } from '../constants/constants-app';
 import { Store } from '@ngrx/store';
 import { selectAccessToken } from '../../features/auth/state/auth.selectors';
-import { AuthState } from '../../features/auth/state/auth.state';
+import { AddressPayload, AddressResponse, AuthState } from '../../features/auth/state/auth.state';
 import { ApiResponse } from '../types/response.interface';
 import { Router } from '@angular/router';
 
@@ -113,5 +113,10 @@ export class AuthService {
   navigateToLogin(): void {
     // Replace with your router logic to navigate to the login page
     this.router.navigate(['/login']); // Example: Redirect to login
+  }
+
+    // Login method
+  saveUserAddressInService(address: AddressPayload): Observable<ApiResponse<AddressResponse[]>> {
+    return this.http.post<ApiResponse<AddressResponse[]>>(`${this.apiUrl}/${Constants.users.USER_SAVE_ADDRESS}`, address)
   }
 }

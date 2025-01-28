@@ -1,4 +1,6 @@
 import { createAction, emptyProps, props } from '@ngrx/store';
+import { AddressPayload, AddressResponse } from './auth.state';
+import { ApiResponse } from '../../../core/types/response.interface';
 
 export const loginStart = createAction(
   '[Auth] Login Start',
@@ -36,3 +38,15 @@ export const logoutFailure = createAction(
   '[Auth] Logout Failure',
   props<{ error: any }>()
 );
+
+export const saveUserAddressActionStart = createAction('[Auth] Save user address start',props<{address:AddressPayload}>()); // Logout initiation
+export const saveUserAddressActionSuccess = createAction(
+  '[Auth] Save user address success',
+  // props:<{addrress:}>()
+); // On successful logout
+export const saveUserAddressActionFailure = createAction(
+  '[Auth] Save user address failure',
+  props<{ error: any }>()
+);
+
+

@@ -41,17 +41,165 @@
 
             <!-- Right Section: Payment -->
             <div class="cart-payment">
-                <h1>Payment will be here</h1>
-            </div>
-            <div class="cart-payment">
                 <div>
-                    <label for="addressInput">Enter your address:</label>
-                    <input
-                        id="addressInput"
-                        type="text"
-                        (input)="onAddressChange($event)"
-                    />
-                    <p>Selected Address: {{ address }}</p>
+                    <label class="heading" for="addressInput"
+                        >Search your Address:</label
+                    >
+                    <div>
+                        <input
+                            type="text"
+                            id="addressInput"
+                            [value]="formattedAddress"
+                            placeholder="Search your address"
+                            (input)="onAddressChange($event)"
+                        />
+                    </div>
+                    <a href="javascript:void(0)" (click)="useMyLocation()"
+                        >Use My Location</a
+                    >
+                </div>
+
+                <div
+                    *ngIf="address && !isAddressSaved"
+                    class="address-details-form"
+                >
+                    <h4>Confirm Address Details:</h4>
+
+                    <div>
+                        <input
+                            type="text"
+                            placeholder="Floor/Block"
+                            [(ngModel)]="addressDetails.floor"
+                        />
+                        <p *ngIf="!addressDetails.floor" class="error-message">
+                            Please enter a floor number.
+                        </p>
+                    </div>
+
+                    <!-- Building -->
+                    <div>
+                        <input
+                            type="text"
+                            placeholder="Building/Apartment"
+                            [(ngModel)]="addressDetails.building"
+                        />
+                        <p
+                            *ngIf="!addressDetails.building"
+                            class="error-message"
+                        >
+                            Please enter building/apartment.
+                        </p>
+                    </div>
+
+                    <!-- Street -->
+                    <div>
+                        <input
+                            type="text"
+                            placeholder="Street/Area"
+                            [(ngModel)]="addressDetails.street"
+                        />
+                        <p *ngIf="!addressDetails.street" class="error-message">
+                            Please enter street/area.
+                        </p>
+                    </div>
+
+                    <!-- Locality -->
+                    <div>
+                        <input
+                            type="text"
+                            placeholder="Locality"
+                            [(ngModel)]="addressDetails.locality"
+                        />
+                        <p
+                            *ngIf="!addressDetails.locality"
+                            class="error-message"
+                        >
+                            Please enter locality.
+                        </p>
+                    </div>
+
+                    <!-- City -->
+                    <div>
+                        <input
+                            type="text"
+                            placeholder="City"
+                            [(ngModel)]="addressDetails.city"
+                        />
+                        <p *ngIf="!addressDetails.city" class="error-message">
+                            Please enter city.
+                        </p>
+                    </div>
+
+                    <!-- State -->
+                    <div>
+                        <input
+                            type="text"
+                            placeholder="State"
+                            [(ngModel)]="addressDetails.state"
+                        />
+                        <p *ngIf="!addressDetails.state" class="error-message">
+                            Please enter state.
+                        </p>
+                    </div>
+
+                    <!-- Country -->
+                    <div>
+                        <input
+                            type="text"
+                            placeholder="Country"
+                            [(ngModel)]="addressDetails.country"
+                        />
+                        <p
+                            *ngIf="!addressDetails.country"
+                            class="error-message"
+                        >
+                            Please enter country.
+                        </p>
+                    </div>
+
+                    <!-- Zip Code -->
+                    <div>
+                        <input
+                            type="text"
+                            placeholder="Zip Code"
+                            [(ngModel)]="addressDetails.zip"
+                        />
+                        <p *ngIf="!addressDetails.zip" class="error-message">
+                            Please enter zip code.
+                        </p>
+                    </div>
+
+                    <!-- Display Error Message -->
+                    <p *ngIf="isError" class="error-message">
+                        {{ errorMessage }}
+                    </p>
+
+                    <div>
+                        <label>
+                            <input
+                                type="checkbox"
+                                [(ngModel)]="addressDetails.isDefault"
+                            />
+                            Make this my default address
+                        </label>
+                    </div>
+
+                    <!-- Disable Save button if any field is missing -->
+                    <button
+                        [disabled]="
+                            !addressDetails.floor ||
+                            !addressDetails.building ||
+                            !addressDetails.street ||
+                            !addressDetails.locality ||
+                            !addressDetails.city ||
+                            !addressDetails.state ||
+                            !addressDetails.country ||
+                            !addressDetails.zip
+                        "
+                        (click)="saveAddressDetails()"
+                    >
+                        Save Address
+                    </button>
                 </div>
             </div>
         </div>

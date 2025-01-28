@@ -1,16 +1,3 @@
-// export interface AuthState {
-//     user: { id: string; name: string; email: string } | null;
-//     isAuthenticated: boolean;
-//     error: string | null;
-//   }
-  
-//   export const initialAuthState: AuthState = {
-//     user: null,
-//     isAuthenticated: false,
-//     error: null
-//   };
-  
-
   export interface AuthState {
     user: {
       _id: string;
@@ -37,3 +24,36 @@
     error: null,
     isAuthenticated: false,
   };
+
+
+
+  export interface AddressResponse {
+    _id: string;
+    userId: string;
+    mainAddress: string;
+    floor: string;
+    building: string;
+    street: string;
+    locality: string;
+    city: string;
+    state: string;
+    country: string;
+    zip: string;
+    isDefault: boolean;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+}
+
+export interface AddressPayload {
+    mainAddress: string;
+    floor: string;
+    building: string;
+    street: string;
+    locality: string;
+    city: string;
+    state: string;
+    country: string;
+    zip: string;
+    isDefault: boolean;
+}

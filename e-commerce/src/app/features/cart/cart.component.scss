@@ -24,7 +24,51 @@
         }
     }
     .cart-payment {
-        flex: 1;
+        padding: 1rem;
+        width: 30%;
+
+        #addressInput {
+            width: 80%;
+            height: 40px;
+            margin-top: 10px;
+            border-radius: 10px;
+        }
+        a {
+            text-align: right;
+            display: block;
+            margin-top: 10px;
+            text-decoration: underline;
+            color: black;
+        }
+        .address-details-form {
+            margin-top: 1rem;
+
+            input {
+                display: block;
+                width: 100%;
+                margin-bottom: 0.5rem;
+                padding: 0.5rem;
+            }
+
+            button {
+                padding: 0.5rem 1rem;
+                background-color: #28a745;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: #218838;
+                }
+            }
+        }
+
+        .success-message {
+            margin-top: 1rem;
+            color: #28a745;
+            font-weight: bold;
+        }
     }
 }
 
@@ -34,7 +78,7 @@
 }
 
 // Empty Cart scss
- .empty-cart-container {
+.empty-cart-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -73,4 +117,9 @@
 .shop-now-btn:hover {
     background-color: #0056b3;
     text-decoration: none;
+}
+
+.error-message {
+    font-size: 14px;
+    color: red;
 }
