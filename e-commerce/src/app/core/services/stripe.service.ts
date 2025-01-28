@@ -1,67 +1,22 @@
-// import { Injectable } from '@angular/core';
-// import { loadStripe, Stripe } from '@stripe/stripe-js';
-// import { environment } from '../../../environments/environment';
-// import { Constants } from '../constants/constants-app';
+import { Inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { Constants } from '../constants/constants-app';
+import { ApiResponse } from '../types/response.interface';
+import { PaymentState } from '../../features/cart/payment-state/payment.state';
 
-// @Injectable({
-//   providedIn: 'root'
-// })
-// export class StripeCheckoutService {
-//   private stripe: Stripe | null = null;
-//   private apiUrl = environment.apiBaseUrl;
+@Injectable({
+  providedIn: 'root',
+})
+export class StripeService {
+    private apiUrl = environment.apiBaseUrl;
 
-//   async initializeStripe(): Promise<Stripe> {
-//     if (!this.stripe) {
-//       this.stripe = await loadStripe(environment.stripePublishableKey);
-//     }
-//     if (!this.stripe) {
-//       throw new Error('Stripe failed to initialize');
-//     }
-//     return this.stripe;
-//   }
+  constructor(private http: HttpClient,@Inject('STRIPE_PUBLISHABLE_KEY') private stripePublishableKey: string) {
+    console.log('Stripe Publishable Key:', this.stripePublishableKey);
+  }
 
-//   async createCheckoutSession(items: any[]): Promise<string> {
-//     try {
-//       const response = await fetch(`${this.apiUrl}/${Constants.buyer.PAYMENT_CHECKOUT}`, {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify({ items })
-//       });
-
-//       const { sessionId } = await response.json();
-//       return sessionId;
-//     } catch (error) {
-//       console.error('Checkout session creation failed', error);
-//       throw error;
-//     }
-//   }
-
-//   async redirectToCheckout(sessionId: string): Promise<void> {
-//     const stripe = await this.initializeStripe();
-//     const { error } = await stripe.redirectToCheckout({ sessionId });
-
-//     if (error) {
-//       console.error('Redirect to checkout failed', error);
-//       throw error;
-//     }
-//   }
-
-//   async handleCheckoutSuccess(sessionId: string): Promise<any> {
-//     try {
-//       const response = await fetch(`${this.apiUrl}/${Constants.buyer.PAYMENT_CHECKOUT}`, {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify({ sessionId })
-//       });
-
-//       return await response.json();
-//     } catch (error) {
-//       console.error('Checkout confirmation failed', error);
-//       throw error;
-//     }
-//   }
-// }
+  createPaymentIntent(): Observable<ApiResponse<PaymentState>> {
+    return this.http.post<ApiResponse<PaymentState>>(`${this.apiUrl}/${Constants.buyer.PAYMENT_INTENT}`, {});
+  }
+}

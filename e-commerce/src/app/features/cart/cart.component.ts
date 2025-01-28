@@ -1,11 +1,7 @@
 import {
-    AfterViewChecked,
-    AfterViewInit,
     Component,
-    ElementRef,
     inject,
     OnInit,
-    ViewChild,
 } from '@angular/core';
 import { CartItem } from './state/cart.state';
 import { Store } from '@ngrx/store';
@@ -25,6 +21,7 @@ import {
 } from '../auth/state/auth.actions';
 import { AddressResponse } from '../auth/state/auth.state';
 import { selectUserAddresses } from '../auth/state/auth.selectors';
+import { createPaymentIntent } from './payment-state/payment.actions';
 
 @Component({
     selector: 'app-cart',
@@ -265,8 +262,11 @@ export class CartComponent implements OnInit {
 
 
 
-    checkout(){
-        console.log("payment option");
-        
+   checkout() {
+    if (!this.selectedAddressId) {
+      alert('Please select an address.');
+      return;
     }
+    this.store.dispatch(createPaymentIntent());
+  }
 }

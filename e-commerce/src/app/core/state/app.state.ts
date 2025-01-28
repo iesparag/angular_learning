@@ -1,6 +1,7 @@
 // app.state.ts
 
 import { AuthState } from "../../features/auth/state/auth.state";
+import { PaymentState } from "../../features/cart/payment-state/payment.state";
 import { CartState } from "../../features/cart/state/cart.state";
 import { ProductState } from "../../features/products/state/product.state";
 import { SaveForLaterState } from "../../features/save-for-later/state/save-for-later.state";
@@ -14,6 +15,7 @@ export interface AppState {
   productPage:ProductState;
   cart: CartState,
   saveForLater: SaveForLaterState,
-  wishlist:WishlistState
+  wishlist:WishlistState,
+  payment: PaymentState
   // cart: CartState;  // Uncomment and add cart state if needed
 }

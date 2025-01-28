@@ -19,12 +19,20 @@ import { ProductEffects } from './features/products/state/product.effects';
 import { CartEffects } from './features/cart/state/cart.effects';
 import { SaveForLaterEffects } from './features/save-for-later/state/save-for-later.effects';
 import { WishlistEffects } from './features/wishlist/state/wishlist.effects';
-import { provideNgxStripe } from 'ngx-stripe';
 import { environment } from '../environments/environment';
-
+import { PaymentEffects } from './features/cart/payment-state/payment.effects';
 
 export const appConfig: ApplicationConfig = {
     providers: [
+        {
+            provide: 'STRIPE_PUBLISHABLE_KEY',
+            useFactory: () => {
+                if (!environment.stripePublishableKey) {
+                    throw new Error('Stripe publishable key is not configured');
+                }
+                return environment.stripePublishableKey;
+            }
+        },
         provideZoneChangeDetection({ eventCoalescing: true }),
         provideRouter(routes),
         provideHttpClient(withInterceptors([AuthInterceptor])),
@@ -36,10 +44,11 @@ export const appConfig: ApplicationConfig = {
             CartEffects,
             SaveForLaterEffects,
             WishlistEffects,
+            PaymentEffects
         ]),
-        provideNgxStripe(environment.stripePublishableKey),
         provideStoreDevtools({ maxAge: 25 }),
         provideAnimations(), // Add this line for animations support
         importProvidersFrom(MatSnackBarModule),
+       
     ],
 };
