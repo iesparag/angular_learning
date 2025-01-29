@@ -10,12 +10,10 @@ export const paymentReducer = createReducer(
     isLoading: true,
     error: null,
   })),
-  on(PaymentActions.createPaymentIntentSuccess, (state, { clientSecret, totalAmount }) => {
-    console.log('clientSecret, totalAmount: ', clientSecret, totalAmount);
+  on(PaymentActions.createPaymentIntentSuccess, (state, { sessionId }) => {
     return ({
     ...state,
-    clientSecret,
-    totalAmount,
+    sessionId,
     isLoading: false,
   })}),
   on(PaymentActions.createPaymentIntentFailure, (state, { error }) => ({

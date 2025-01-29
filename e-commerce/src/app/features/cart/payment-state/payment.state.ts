@@ -1,14 +1,12 @@
 // payment.state.ts
 export interface PaymentState {
-  clientSecret: string | null;
-  totalAmount: number | null;
+  sessionId: string | null; 
   isLoading: boolean;
   error: string | null;
 }
 
 export const initialPaymentState: PaymentState = {
-  clientSecret: null,
-  totalAmount: null,
+ sessionId: null,
   isLoading: false,
   error: null,
 };

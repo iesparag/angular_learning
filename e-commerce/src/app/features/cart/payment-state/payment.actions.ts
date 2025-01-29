@@ -3,12 +3,11 @@ import { createAction, props } from '@ngrx/store';
 
 export const createPaymentIntent = createAction(
   '[Payment] Create Payment Intent',
-//   props<{ addressId: string }>() 
 );
 
 export const createPaymentIntentSuccess = createAction(
   '[Payment] Create Payment Intent Success',
-  props<{ clientSecret: string; totalAmount: number }>()
+  props<{ sessionId: string }>()  // Now passing sessionId instead of clientSecret
 );
 
 export const createPaymentIntentFailure = createAction(

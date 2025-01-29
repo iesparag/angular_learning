@@ -12,22 +12,34 @@ export class PaymentEffects {
     stripeService = inject(StripeService);
 
 
-  createPaymentIntent$ = createEffect(() => {
+   createPaymentIntent$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentActions.createPaymentIntent),
-      mergeMap(() =>{
-        return this.stripeService.createPaymentIntent().pipe(
-          map((response) =>{
-            return PaymentActions.createPaymentIntentSuccess({
-              clientSecret: response.data.clientSecret ?? '',
-              totalAmount: response.data.totalAmount ?? 0,
-            })}
-          ),
+      mergeMap(() => {
+        return this.stripeService.createCheckoutSession().pipe(
+          map((response) => {
+            console.log('response: ', response);
+
+            // Check if sessionId exists and redirect
+            if (response.data && response.data.sessionId) {
+              // Redirect to Stripe Checkout
+              this.stripeService.redirectToCheckout(response.data.sessionId);
+
+              // Dispatch success action with sessionId (for other state management or logging)
+              return PaymentActions.createPaymentIntentSuccess({
+                sessionId: response.data.sessionId, // Pass sessionId instead of clientSecret
+              });
+            } else {
+              return PaymentActions.createPaymentIntentFailure({
+                error: 'No session ID returned from Stripe.',
+              });
+            }
+          }),
           catchError((error) =>
             of(PaymentActions.createPaymentIntentFailure({ error: error.message }))
           )
-        )}
-      )
-    )}
-  )
+        );
+      })
+    );
+  });
 }

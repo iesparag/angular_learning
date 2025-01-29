@@ -15,6 +15,6 @@ export const Constants = {
         moveItemFromSaveForLaterToCart: 'move-item-from-save-for-later-to-cart',
         CART_TO_CART: 'move-to-cart',
         WISHLIST: 'buyer/wishlist',
-        PAYMENT_INTENT: 'buyer/payment/create-payment-intent',
+        PAYMENT_CHECKOUT: 'buyer/payment/create-checkout-session',
     },
 };
