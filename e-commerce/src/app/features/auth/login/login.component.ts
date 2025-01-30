@@ -70,7 +70,7 @@ export class LoginComponent implements OnInit {
             this.isLoading = false;
           } else {
             // Redirect to products page if authentication is successful
-            this.router.navigate(['/home']);
+            // this.router.navigate(['/home']);
           }
         });
     }

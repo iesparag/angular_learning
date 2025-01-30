@@ -25,6 +25,10 @@ export const loginSuccess = createAction(
   }>()
 );
 
+export const updateUserFromLocalStorageSuccess = createAction(
+  '[Auth] Login update from local'
+);
+
 export const loginFailure = createAction(
   '[Auth] Login Failure',
   props<{ error: string }>()

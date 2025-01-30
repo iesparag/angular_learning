@@ -16,15 +16,12 @@ export const AuthInterceptor: HttpInterceptorFn = (
 ): Observable<HttpEvent<any>> => {
   const authService = inject(AuthService); // Inject AuthService
 
-  // Skip intercepting logout requests
-  // if (req.url.includes('logout')) {
-  //   return next(req);
-  // }
-
+  // Get the access token from the auth service
   const accessToken = authService.getAccessToken();
+
   let authReq = req;
 
-  // Add access token to header if available
+  // Add access token to the request header if available
   if (accessToken) {
     authReq = req.clone({
       setHeaders: { Authorization: `Bearer ${accessToken}` },
@@ -33,30 +30,39 @@ export const AuthInterceptor: HttpInterceptorFn = (
 
   return next(authReq).pipe(
     catchError((error: HttpErrorResponse) => {
+      // If error is 401 (Unauthorized), handle token refresh
       if (error.status === 401) {
-        // Handle token refresh
+        // Call the refresh token API to get a new access token
         return authService.refreshAccessToken().pipe(
           tap((res) => {
+            // Optionally, you can log or perform additional actions after the token refresh
           }),
           switchMap(
             (newTokens: { accessToken: string; refreshToken: string }) => {
-              // Retry failed request with new token
+              // Save the new tokens and retry the original request with the new access token
+              authService.saveTokens(newTokens.accessToken, newTokens.refreshToken);
+
+              // Clone the original request with the new access token
               const newRequest = req.clone({
                 setHeaders: {
                   Authorization: `Bearer ${newTokens.accessToken}`,
                 },
               });
+
+              // Retry the failed request
               return next(newRequest);
             }
           ),
           catchError((err) => {
-            // Clear tokens and redirect to login (local handling, no API call)
-            authService.clearTokens(); // Clear tokens locally
-            authService.navigateToLogin(); // Redirect to login page
+            // Clear tokens and redirect to login in case of a refresh error
+            authService.clearTokens();
+            authService.navigateToLogin();
             return throwError(() => err);
           })
         );
       }
+
+      // If error is not 401, propagate the error as is
       return throwError(() => error);
     })
   );

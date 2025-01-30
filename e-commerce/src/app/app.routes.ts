@@ -8,18 +8,22 @@ import { authGuard } from './core/guards/auth.guard';
 import { ForgotPasswordComponent } from './features/auth/forgot-password/forgot-password.component';
 import { LandingPageComponent } from './features/landing-page/landing-page.component';
 import { WishlistComponent } from './features/wishlist/wishlist.component';
-// import { PaymentComponent } from './features/payment/payment.component';
+import { OrdersComponent } from './features/orders/orders.component';
+import { OrderDetailComponent } from './features/order-detail/order-detail.component';
+import { PaymentSuccessComponent } from './features/payment-success/payment-success.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: LandingPageComponent },
-  { path: 'products', component: ProductListComponent,canActivate: [authGuard], },
+  { path: 'products', component: ProductListComponent },
   { path: 'wishlist', component: WishlistComponent },
   { path: 'products/:id', component: ProductDetailComponent },
   { path: 'cart', component: CartComponent },
-  // { path: 'payment', component: PaymentComponent },
+  { path: 'payment/success', component: PaymentSuccessComponent },
   { path: 'login', component: LoginComponent },
   { path: 'sign-up', component: SignupComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
-  { path: '**', redirectTo: 'home' }, // Fallback route
+  { path: 'orders', component: OrdersComponent },
+  { path: 'orders/:id', component: OrderDetailComponent },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '**', redirectTo: '' },
 ];

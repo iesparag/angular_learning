@@ -59,43 +59,46 @@ export class AuthService {
 
   // Refresh token logic
   refreshAccessToken(): Observable<any> {
-    if (this.isRefreshing) {
-      // Wait until refreshTokenSubject has a new value
-      return this.refreshTokenSubject.pipe(
-        filter((token) => token !== null),
-        switchMap(() => this.refreshTokenSubject.asObservable())
-      );
-    } else {
-      this.isRefreshing = true;
-      const refreshToken = this.getRefreshToken();
+  if (this.isRefreshing) {
+    return this.refreshTokenSubject.pipe(
+      filter((token) => token !== null), 
+      switchMap(() => this.refreshTokenSubject.asObservable())
+    );
+  } else {
+    this.isRefreshing = true;
+    const refreshToken = this.getRefreshToken();
 
-      if (!refreshToken) {
-        this.isRefreshing = false;
-        return throwError(() => new Error('No refresh token available'));
-      }
-
-      return this.http.post(`${this.apiUrl}/${Constants.users.USER_GENERATE_ACCESS_BY_REFRESH}`, {
-        refreshToken,
-      }).pipe(
-        tap((response: any) => {
-          const newAccessToken = response.data.accessToken;
-          const newRefreshToken = response.data.refreshToken;
-          this.saveTokens(newAccessToken, newRefreshToken);
-          this.refreshTokenSubject.next(newAccessToken);
-        }),
-        catchError((error) => {
-          this.clearTokens();
-          return throwError(() => error);
-        }),
-        finalize(() => {
-          this.isRefreshing = false;
-        })
-      );
+    if (!refreshToken) {
+      this.isRefreshing = false;
+      this.clearTokens();
+      this.navigateToLogin();
+      return throwError(() => new Error('No refresh token available'));
     }
+
+    return this.http.post(`${this.apiUrl}/${Constants.users.USER_GENERATE_ACCESS_BY_REFRESH}`, {
+      refreshToken,
+    }).pipe(
+      tap((response: any) => {
+        const newAccessToken = response.data.accessToken;
+        const newRefreshToken = response.data.refreshToken;
+        this.saveTokens(newAccessToken, newRefreshToken);
+        this.refreshTokenSubject.next(newAccessToken); // Emit new access token
+      }),
+      catchError((error) => {
+        this.clearTokens(); // Clear invalid tokens
+        this.navigateToLogin(); // Redirect user to login page on error
+        return throwError(() => error);
+      }),
+      finalize(() => {
+        this.isRefreshing = false; // Reset the flag after refreshing is complete
+      })
+    );
   }
+}
+
 
   // Helper methods for token management
-  private saveTokens(accessToken: string, refreshToken: string): void {
+  public saveTokens(accessToken: string, refreshToken: string): void {
     localStorage.setItem('accessToken', accessToken);
     localStorage.setItem('refreshToken', refreshToken);
   }

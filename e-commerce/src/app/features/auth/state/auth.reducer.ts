@@ -24,6 +24,18 @@ export const authReducer = createReducer(
       isAuthenticated: true
     })}
   ),
+  on(
+  AuthActions.updateUserFromLocalStorageSuccess,
+  (state) => ({
+    ...state,
+    user: JSON.parse(localStorage.getItem('user') || 'null'),  // Parse the stored string into an object
+    accessToken: localStorage.getItem('accessToken'),
+    refreshToken: localStorage.getItem('refreshToken'),
+    success: true,
+    error: null,
+    isAuthenticated: true
+  })
+),
   on(AuthActions.loginFailure, (state, { error }) => {
     console.log('error: ', error);
     return ({

@@ -1,50 +1,56 @@
 <nav class="navbar">
-  <div class="navbar-brand">
-    <a routerLink="/">MyStore</a>
-  </div>
-  <div class="navbar-links">
-    <ul>
-      <li><a routerLink="/men">Men</a></li>
-      <li><a routerLink="/women">Women</a></li>
-      <li><a routerLink="/kids">Kids</a></li>
-      <li><a routerLink="/home-living">Home & Living</a></li>
-      <li><a routerLink="/beauty">Beauty</a></li>
-    </ul>
-  </div>
-  <div class="navbar-search">
-    <input type="text" placeholder="Search for products, brands, and more" />
-  </div>
-  <div class="navbar-icons">
-    <!-- Conditional Rendering for Auth -->
-    <a routerLink="/wishlist" class="favorites">
-      <mat-icon class="favorite-icon">favorite</mat-icon>
-      <span class="favorites-count">{{wishlistItemCount}}</span>
-    </a>
-    <a routerLink="/cart" class="cart">
-      <mat-icon>shopping_cart</mat-icon>
-      <span class="cart-count">{{cartItemCount}}</span>
-    </a>
-    <ng-container *ngIf="user$ | async as user">
-      <button mat-button [matMenuTriggerFor]="menu">
-        <img
-          [src]="user.avatar || defaultAvatar"
-          [alt]="user.firstName"
-          style="
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-          "
+    <div class="navbar-brand">
+        <a routerLink="/">MyStore</a>
+    </div>
+    <div class="navbar-links">
+        <ul>
+            <li><a routerLink="/men">Men</a></li>
+            <li><a routerLink="/women">Women</a></li>
+            <li><a routerLink="/kids">Kids</a></li>
+            <li><a routerLink="/home-living">Home & Living</a></li>
+            <li><a routerLink="/beauty">Beauty</a></li>
+        </ul>
+    </div>
+    <div class="navbar-search">
+        <input
+            type="text"
+            placeholder="Search for products, brands, and more"
         />
-      </button>
-      <mat-menu #menu="matMenu">
-        <span mat-menu-item *ngIf="!user.avatar">Hi, {{ user.firstName }}</span>
-        <button mat-menu-item (click)="onLogout()">Logout</button>
-      </mat-menu>
-    </ng-container>
+    </div>
+    <div class="navbar-icons">
+        <!-- Conditional Rendering for Auth -->
+        <a routerLink="/wishlist" class="favorites">
+            <mat-icon class="favorite-icon">favorite</mat-icon>
+            <span class="favorites-count">{{ wishlistItemCount }}</span>
+        </a>
+        <a routerLink="/cart" class="cart">
+            <mat-icon>shopping_cart</mat-icon>
+            <span class="cart-count">{{ cartItemCount }}</span>
+        </a>
+        <ng-container *ngIf="user$ | async as user">
+            <button mat-button [matMenuTriggerFor]="menu">
+                <img
+                    [src]="user.avatar || defaultAvatar"
+                    [alt]="user.firstName"
+                    style="
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 50%;
+                        object-fit: cover;
+                    "
+                />
+            </button>
+            <mat-menu #menu="matMenu" class="matMenu">
+                <span mat-menu-item *ngIf="!user.avatar"
+                    >Hi, {{ user.firstName }}</span
+                >
+                <button mat-menu-item><a class="anchor_tag" href="/orders">ORDERS</a></button>
+                <button mat-menu-item (click)="onLogout()">Logout</button>
+            </mat-menu>
+        </ng-container>
 
-    <ng-template #showLogin>
-      <a routerLink="/login" class="login">Login</a>
-    </ng-template>
-  </div>
+        <ng-template #showLogin>
+            <a routerLink="/login" class="login">Login</a>
+        </ng-template>
+    </div>
 </nav>

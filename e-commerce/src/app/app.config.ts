@@ -21,9 +21,11 @@ import { SaveForLaterEffects } from './features/save-for-later/state/save-for-la
 import { WishlistEffects } from './features/wishlist/state/wishlist.effects';
 import { environment } from '../environments/environment';
 import { PaymentEffects } from './features/cart/payment-state/payment.effects';
+import { HashLocationStrategy, LocationStrategy, PathLocationStrategy  } from '@angular/common';
 
 export const appConfig: ApplicationConfig = {
     providers: [
+        { provide: LocationStrategy, useClass: PathLocationStrategy  }, 
         {
             provide: 'STRIPE_PUBLISHABLE_KEY',
             useFactory: () => {
