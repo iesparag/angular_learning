@@ -9,21 +9,32 @@ import { Product } from '../../features/products/state/product.state';
 import { ApiResponse } from '../types/response.interface';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class ProductService {
-  private apiUrl = environment.apiBaseUrl;
-  constructor(private http: HttpClient, private store: Store) {}
+    private apiUrl = environment.apiBaseUrl;
+    constructor(private http: HttpClient, private store: Store) {}
 
-  getProducts(categoryId: string | null): Observable<ApiResponse<Product[]>> {
-    let params = new HttpParams();
-    if (categoryId) {
-      params = params.set('categoryId', categoryId);
+    getProducts(params: {
+        categoryId?: string | null;
+        subcategoryId?: string | null;
+    }): Observable<ApiResponse<Product[]>> {
+        let httpParams = new HttpParams();
+        if (params.categoryId) {
+            httpParams = httpParams.set('categoryId', params.categoryId);
+        }
+        if (params.subcategoryId) {
+            httpParams = httpParams.set('subcategoryId', params.subcategoryId);
+        }
+        return this.http.get<ApiResponse<Product[]>>(
+            `${this.apiUrl}/${Constants.buyer.PRODUCTS}`,
+            { params: httpParams }
+        );
     }
-    return this.http.get<ApiResponse<Product[]>>(`${this.apiUrl}/${Constants.buyer.PRODUCTS}`, { params });
-  }
 
-  getOneProduct(productId: string | null): Observable<ApiResponse<Product>> {
-    return this.http.get<ApiResponse<Product>>(`${this.apiUrl}/${Constants.buyer.PRODUCTS}/${productId}`);
-  }
+    getOneProduct(productId: string | null): Observable<ApiResponse<Product>> {
+        return this.http.get<ApiResponse<Product>>(
+            `${this.apiUrl}/${Constants.buyer.PRODUCTS}/${productId}`
+        );
+    }
 }

@@ -8,7 +8,9 @@ export const Constants = {
     },
     buyer: {
         CATEGORIES: 'buyer/categories',
+        SUBCATEGORIES: 'buyer/subcategories',
         PRODUCTS: 'buyer/products',
+        PRODUCTSEARCH: 'buyer/products/search',
         CART: 'buyer/cart',
         ORDERS: 'buyer/orders',
         GETSAVEFORLATER: 'save-for-later',
@@ -19,3 +21,6 @@ export const Constants = {
         PAYMENT_CHECKOUT: 'buyer/payment/create-checkout-session',
     },
 };
+
+
+// /api/v1/buyer/subcategories

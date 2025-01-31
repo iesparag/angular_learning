@@ -29,6 +29,7 @@ export class ProductListComponent implements OnInit {
   activatedRouter = inject(ActivatedRoute);
   store = inject(Store);
   categoryId: string | null = null;
+  subcategoryId: string | null = null;
   productList$: Observable<Product[]> = of([]);
   wishlist$: Observable<wishlistProduct[]> = of([]);
   productWithWishlist$: Observable<(Product & { isFavorite: boolean })[]> = of(
@@ -37,7 +38,13 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRouter.queryParams.subscribe(
-      (elem: any) => (this.categoryId = elem?.categoryId)
+      (elem: any) => {
+        
+          this.categoryId = elem?.categoryId
+          console.log('this.categoryId: ', this.categoryId);
+          this.subcategoryId = elem?.subcategoryId
+          console.log('this.subcategoryId: ', this.subcategoryId);
+        }
     );
     this.onGetUserWishlist();
     this.onGetAllProducts();
@@ -67,7 +74,13 @@ export class ProductListComponent implements OnInit {
     this.store.dispatch(getUserWishlistStart());
   }
 
-  onGetAllProducts() {
-    this.store.dispatch(loadProducts({ categoryId: this.categoryId }));
-  }
+ onGetAllProducts() {
+    if (this.categoryId && this.subcategoryId) {
+        this.store.dispatch(loadProducts({ categoryId: this.categoryId, subcategoryId: this.subcategoryId }));
+    } else if (this.categoryId) {
+        this.store.dispatch(loadProducts({ categoryId: this.categoryId }));
+    } else if (this.subcategoryId) {
+        this.store.dispatch(loadProducts({ subcategoryId: this.subcategoryId }));
+    }
+}
 }

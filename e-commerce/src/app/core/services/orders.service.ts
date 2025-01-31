@@ -17,4 +17,8 @@ export class OrdersService {
   getOrdersService(): Observable<ApiResponse<Order[]>> {
     return this.http.get<ApiResponse<Order[]>>(`${this.apiUrl}/${Constants.buyer.ORDERS}`);
   }
+
+  getOrderDetail(orderDetailId:string): Observable<ApiResponse<Order>> {
+    return this.http.get<ApiResponse<Order>>(`${this.apiUrl}/${Constants.buyer.ORDERS}/${orderDetailId}`);
+  }
 }

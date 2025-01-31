@@ -4,17 +4,19 @@
     </div>
     <div class="navbar-links">
         <ul>
-            <li><a routerLink="/men">Men</a></li>
-            <li><a routerLink="/women">Women</a></li>
-            <li><a routerLink="/kids">Kids</a></li>
-            <li><a routerLink="/home-living">Home & Living</a></li>
-            <li><a routerLink="/beauty">Beauty</a></li>
+            <li><a routerLink="/home/Mobiles">Mobiles</a></li>
+            <li><a routerLink="/home/women">Women</a></li>
+            <li><a routerLink="/home/kids">Kids</a></li>
+            <li><a routerLink="/home/home-living">Home & Living</a></li>
+            <li><a routerLink="/home/beauty">Beauty</a></li>
         </ul>
     </div>
     <div class="navbar-search">
         <input
             type="text"
             placeholder="Search for products, brands, and more"
+            [(ngModel)]="searchQuery"
+            (input)="onSearchChange()"
         />
     </div>
     <div class="navbar-icons">

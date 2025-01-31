@@ -21,7 +21,6 @@ export class AppComponent {
         // Hide header and footer for specific routes
 
         this.router.events.subscribe((res) => {
-            console.log('res:1234 ', res);
             const noLayoutRoutes = ['/login', '/signup'];
             this.showLayout = !noLayoutRoutes.includes(this.router.url);
         });

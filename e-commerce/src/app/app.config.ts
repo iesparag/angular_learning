@@ -23,6 +23,7 @@ import { environment } from '../environments/environment';
 import { PaymentEffects } from './features/cart/payment-state/payment.effects';
 import { HashLocationStrategy, LocationStrategy, PathLocationStrategy  } from '@angular/common';
 import { OrderEffects } from './features/orders/state/order.effects';
+import { SearchEffects } from './features/search/state/search.effects';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -48,7 +49,8 @@ export const appConfig: ApplicationConfig = {
             SaveForLaterEffects,
             WishlistEffects,
             PaymentEffects,
-            OrderEffects
+            OrderEffects,
+            SearchEffects
         ]),
         provideStoreDevtools({ maxAge: 25 }),
         provideAnimations(), // Add this line for animations support

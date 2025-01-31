@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { Constants } from '../constants/constants-app';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../types/response.interface';
-import { Category } from '../types/category.interface';
+import { Category, ISubCategory } from '../types/category.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -17,4 +17,9 @@ export class LandingpageServiceService {
   getAllCategories({page=1,limit=100}):Observable<ApiResponse<Category[]>>{
     return this.http.get<ApiResponse<Category[]>>(`${this.apiUrl}/${Constants.buyer.CATEGORIES}?page=${page}&limit=${limit}`)
   }
+
+  searchAllSubCategoryForCategory(name:string):Observable<ApiResponse<ISubCategory[]>>{
+    return this.http.get<ApiResponse<ISubCategory[]>>(`${this.apiUrl}/${Constants.buyer.SUBCATEGORIES}?name=${name}`)
+  }
+
 }

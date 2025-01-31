@@ -8,6 +8,7 @@ import { saveForLaterReducer } from '../../features/save-for-later/state/save-fo
 import { wishlistReducer } from '../../features/wishlist/state/wishlist.reducer';
 import { paymentReducer } from '../../features/cart/payment-state/payment.reducer';
 import { orderReducer } from '../../features/orders/state/order.reducer';
+import { searchReducer } from '../../features/search/state/search.reducer';
 // import { cartReducer } from '../features/cart/state/cart.reducer';
 
 export const appReducer: ActionReducerMap<AppState> = {
@@ -18,5 +19,6 @@ export const appReducer: ActionReducerMap<AppState> = {
   saveForLater: saveForLaterReducer,
   wishlist: wishlistReducer,
   payment: paymentReducer,
-  orders:orderReducer
+  orders:orderReducer,
+  search:searchReducer
 };

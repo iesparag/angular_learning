@@ -11,25 +11,35 @@ export class ProductEffects {
   actions$ = inject(Actions)
   productService = inject(ProductService)
 
-  loadProducts$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(loadProducts),
-      switchMap(({ categoryId }) =>
-        this.productService.getProducts(categoryId).pipe(
-          map((products) => ({
-            type: '[Product] Load Products Success',
-           products: products.data,
-          })),
-          catchError((error) =>
-            of({
-              type: '[Product] Load Products Failure',
-              error,
-            })
-          )
+ loadProducts$ = createEffect(() => {
+  return this.actions$.pipe(
+    ofType(loadProducts),
+    switchMap(({ categoryId, subcategoryId }) => {
+      const params: any = {};
+
+      if (categoryId) {
+        params.categoryId = categoryId; 
+      }
+
+      if (subcategoryId) {
+        params.subcategoryId = subcategoryId; 
+      }
+      return this.productService.getProducts(params).pipe(
+        map((products) => ({
+          type: '[Product] Load Products Success',
+          products: products.data,
+        })),
+        catchError((error) =>
+          of({
+            type: '[Product] Load Products Failure',
+            error,
+          })
         )
-      )
-    );
-  });
+      );
+    })
+  );
+});
+
 
 
 
