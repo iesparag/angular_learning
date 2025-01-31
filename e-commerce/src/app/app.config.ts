@@ -22,6 +22,7 @@ import { WishlistEffects } from './features/wishlist/state/wishlist.effects';
 import { environment } from '../environments/environment';
 import { PaymentEffects } from './features/cart/payment-state/payment.effects';
 import { HashLocationStrategy, LocationStrategy, PathLocationStrategy  } from '@angular/common';
+import { OrderEffects } from './features/orders/state/order.effects';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -46,7 +47,8 @@ export const appConfig: ApplicationConfig = {
             CartEffects,
             SaveForLaterEffects,
             WishlistEffects,
-            PaymentEffects
+            PaymentEffects,
+            OrderEffects
         ]),
         provideStoreDevtools({ maxAge: 25 }),
         provideAnimations(), // Add this line for animations support

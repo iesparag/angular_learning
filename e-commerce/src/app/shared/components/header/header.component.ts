@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { selectIsAuthenticated, selectUser } from '../../../features/auth/state/auth.selectors';
@@ -25,6 +25,7 @@ export class HeaderComponent implements OnInit {
   user$: Observable<AuthState["user"]>;
   isAuthenticated$: Observable<boolean>;
   defaultAvatar = 'https://avatars.githubusercontent.com/u/103980322?v=4&size=64';
+  router = inject(Router)
   cartItemCount: number  = 0
   wishlistItemCount: number  = 0
 
@@ -44,5 +45,8 @@ export class HeaderComponent implements OnInit {
 
   onLogout(): void {
     this.store.dispatch(logout()); // Dispatch logout action
+  }
+  onOrder(){
+this.router.navigate(["/orders"])
   }
 }

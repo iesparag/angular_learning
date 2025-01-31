@@ -44,7 +44,7 @@
                 <span mat-menu-item *ngIf="!user.avatar"
                     >Hi, {{ user.firstName }}</span
                 >
-                <button mat-menu-item><a class="anchor_tag" href="/orders">ORDERS</a></button>
+                <button mat-menu-item (click)="onOrder()">Orders</button>
                 <button mat-menu-item (click)="onLogout()">Logout</button>
             </mat-menu>
         </ng-container>

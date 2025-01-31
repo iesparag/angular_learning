@@ -10,6 +10,7 @@ export const Constants = {
         CATEGORIES: 'buyer/categories',
         PRODUCTS: 'buyer/products',
         CART: 'buyer/cart',
+        ORDERS: 'buyer/orders',
         GETSAVEFORLATER: 'save-for-later',
         moveItemFromCartToSaveForLater: 'move-item-from-cart-to-sav-for-later',
         moveItemFromSaveForLaterToCart: 'move-item-from-save-for-later-to-cart',
